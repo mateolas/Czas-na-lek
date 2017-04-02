@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="btn_corner_radius_light_blue">4dp</dimen>
+    <dimen name="stroke_width">1dp</dimen>
+    <dimen name="logo_width">80dp</dimen>
+    <dimen name="logo_height">80dp</dimen>
+    <dimen name="logo_marginTop">160dp</dimen>
+    <dimen name="logo_marginBotton">220dp</dimen>
+    <dimen name="btn_emptyNoMedicine_width">260dp</dimen>
+    <dimen name="btn_emptyNoMedicine_height">55dp</dimen>
+    <dimen name="btn_textSize">24sp</dimen>
+</resources>

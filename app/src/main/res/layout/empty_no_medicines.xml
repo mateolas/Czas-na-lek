@@ -5,21 +5,22 @@
 
     <ImageView
         android:id="@+id/logo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginBottom="156dp"
+        android:layout_width="@dimen/logo_width"
+        android:layout_height="@dimen/logo_height"
+        android:layout_marginTop="@dimen/logo_marginTop"
+        android:layout_marginBottom="@dimen/logo_marginBotton"
         android:src="@drawable/logo"
         android:layout_centerHorizontal="true"/>
 
 
     <Button
         android:id="@+id/dodaj_lek"
+        android:background="@drawable/bg_btn_add_it"
         android:layout_below="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/btn_emptyNoMedicine_width"
+        android:layout_height="@dimen/btn_emptyNoMedicine_height"
         android:textAllCaps="false"
-        android:textSize="18sp"
+        android:textSize="@dimen/btn_textSize"
         android:textColor="@color/btn_add_color"
         android:text="@string/button_dodaj_lek"
         android:fontFamily="sans-serif-light"
