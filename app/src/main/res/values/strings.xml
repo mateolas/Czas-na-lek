@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WezLek</string>
+    <string name="button_dodaj_lek">Dodaj lek</string>
 </resources>
