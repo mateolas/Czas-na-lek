@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Wez Lek</string>
     <string name="button_dodaj_lek">Dodaj lek</string>
+    <string name="dodaj_lek">Dodaj lek</string>
+    <string name="ev_podaj_nazw_leku">Podaj nazwę leku</string>
+    <string name="tv_co_il_godzin_nalezy_przyjmowa_lek">Co ilę godzin należy przyjmować lek ?</string>
+    <string name="btn_dodaj">Dodaj</string>
 </resources>

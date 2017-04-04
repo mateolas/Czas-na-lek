@@ -14,7 +14,7 @@
 
 
     <Button
-        android:id="@+id/dodaj_lek"
+        android:id="@+id/btn_dodaj_lek"
         android:background="@drawable/bg_btn_add_it"
         android:layout_below="@+id/logo"
         android:layout_width="@dimen/btn_emptyNoMedicine_width"
