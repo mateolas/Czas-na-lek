@@ -6,7 +6,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -14,13 +13,20 @@ public class ActivityMain extends AppCompatActivity {
 
     Toolbar mToolbar;
     Button mBtnAdd;
+
+    //inner anonymous class --> need to check it !
     private View.OnClickListener mBtnAddListener = new View.OnClickListener(){
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(ActivityMain.this, "Button was clicked", Toast.LENGTH_SHORT).show();
+            showDialogAdd();
         }
     };
+
+    private void showDialogAdd() {
+        DialogAdd dialog = new DialogAdd();
+        dialog.show(getSupportFragmentManager(),"Add");
+    }
 
 
     @Override

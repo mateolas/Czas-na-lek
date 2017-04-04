@@ -26,6 +26,7 @@
         android:id="@+id/et_nazwa_leku"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="textVisiblePassword"
         android:layout_below="@id/btn_close"
         android:hint="@string/ev_podaj_nazw_leku"
         android:padding="16dp"
