@@ -11,6 +11,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
+import com.studio.skyline.wezlek.beans.Drop;
+
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
+
 /**
  * Created by aneimat on 04.04.2017.
  */
@@ -22,12 +27,47 @@ public class DialogAdd extends DialogFragment {
     private SeekBar mInputWhen;
     private Button mBtnAdd;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Realm.init(getActivity());
+    }
+
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            int id = v.getId();
+            switch (id) {
+                case R.id.btn_dodaj_lek:
+                    addAction();
+
+                    break;
+            }
+
             dismiss();
         }
     };
+
+    private void addAction() {
+        String what = mInputWhat.getText().toString();
+        long now = System.currentTimeMillis();
+
+        Realm.init(getActivity());
+        RealmConfiguration configuration = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(configuration);
+                //default configuration
+
+        Realm realm = Realm.getDefaultInstance();
+
+        Drop drop = new Drop(what, now, 0, false);
+
+        realm.beginTransaction();
+        //copying to table, so we need to make a transaction
+        realm.copyToRealm(drop);
+        realm.commitTransaction();
+        realm.close();
+
+    }
 
     public DialogAdd() {
     }
@@ -50,5 +90,6 @@ public class DialogAdd extends DialogFragment {
         mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
 
         mBtnClose.setOnClickListener(mBtnClickListener);
+        mBtnAdd.setOnClickListener(mBtnClickListener);
     }
 }

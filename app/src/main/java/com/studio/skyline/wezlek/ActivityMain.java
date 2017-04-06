@@ -8,6 +8,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.stetho.Stetho;
+import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
+
+import java.util.regex.Pattern;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -38,7 +42,50 @@ public class ActivityMain extends AppCompatActivity {
         mBtnAdd.setOnClickListener(mBtnAddListener);
         setSupportActionBar(mToolbar);
         initBackgroundImage();
+
+
+
+         //Create an InitializerBuilder
+       //Stetho.InitializerBuilder initializerBuilder =
+        //        Stetho.newInitializerBuilder(this);
+
+        // Enable Chrome DevTools
+        //initializerBuilder.enableWebKitInspector(
+        //       Stetho.defaultInspectorModulesProvider(this)
+        //);
+
+        // Enable command line interface
+        //  initializerBuilder.enableDumpapp(
+        //        Stetho.defaultDumperPluginsProvider(this)
+        //);
+
+        // Use the InitializerBuilder to generate an Initializer
+         //       Stetho.Initializer initializer = initializerBuilder.build();
+
+        // Initialize Stetho with the Initializer
+        //        Stetho.initialize(initializer);
+
+
+
+
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
+                        .withFolder(getCacheDir())
+
+                        .withMetaTables()
+                        .withDescendingOrder()
+                        .withLimit(1000)
+                        .databaseNamePattern(Pattern.compile(".+\\.realm"))
+                        .build())
+                        .build());
     }
+
+
+
+
+
 
     private void initBackgroundImage() {
         ImageView background = (ImageView) findViewById(R.id.background);
