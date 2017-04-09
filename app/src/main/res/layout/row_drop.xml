@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/bg_row_pill"
+    android:padding="22dp">
+
+    <ImageView
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:background="@null"
+        android:src="@drawable/ic_pill" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp"
+        android:text="Test" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="When"
+        android:paddingLeft="22dp"
+        android:paddingRight="22dp"/>
+
+
+</LinearLayout>

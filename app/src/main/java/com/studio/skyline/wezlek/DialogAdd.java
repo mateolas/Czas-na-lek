@@ -61,8 +61,8 @@ public class DialogAdd extends DialogFragment {
 
         Drop drop = new Drop(what, now, 0, false);
 
-        realm.beginTransaction();
         //copying to table, so we need to make a transaction
+        realm.beginTransaction();
         realm.copyToRealm(drop);
         realm.commitTransaction();
         realm.close();

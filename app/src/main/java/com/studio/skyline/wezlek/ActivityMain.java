@@ -2,6 +2,7 @@ package com.studio.skyline.wezlek;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,7 @@ public class ActivityMain extends AppCompatActivity {
 
     Toolbar mToolbar;
     Button mBtnAdd;
-
+    RecyclerView mRecycler;
     //inner anonymous class --> need to check it !
     private View.OnClickListener mBtnAddListener = new View.OnClickListener(){
 
@@ -37,9 +38,13 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //initializing items
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mBtnAdd = (Button) findViewById(R.id.btn_dodaj_lek);
+        mRecycler = (RecyclerView) findViewById(R.id.rv_drops);
+
         mBtnAdd.setOnClickListener(mBtnAddListener);
+
         setSupportActionBar(mToolbar);
         initBackgroundImage();
 
