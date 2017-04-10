@@ -14,7 +14,6 @@ import android.widget.SeekBar;
 import com.studio.skyline.wezlek.beans.Drop;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 /**
  * Created by aneimat on 04.04.2017.
@@ -52,11 +51,8 @@ public class DialogAdd extends DialogFragment {
         String what = mInputWhat.getText().toString();
         long now = System.currentTimeMillis();
 
-        Realm.init(getActivity());
-        RealmConfiguration configuration = new RealmConfiguration.Builder().build();
-        Realm.setDefaultConfiguration(configuration);
-                //default configuration
 
+       //default configuration
         Realm realm = Realm.getDefaultInstance();
 
         Drop drop = new Drop(what, now, 0, false);
@@ -64,9 +60,9 @@ public class DialogAdd extends DialogFragment {
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);
+
         realm.commitTransaction();
         realm.close();
-
     }
 
     public DialogAdd() {
