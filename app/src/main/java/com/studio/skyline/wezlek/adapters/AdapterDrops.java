@@ -26,7 +26,7 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
     //ArrayList to contain 100 numbers
     private RealmResults<Drop> mResults;
 
-    //constructor which excepts context object
+    //constructor which excepts context object and Realm results
     public AdapterDrops(Context context, RealmResults<Drop> results) {
         mInflater = LayoutInflater.from(context);
         update(results);
@@ -48,6 +48,7 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
 
     }
 
+    //changig row drop (a bar with medicine name) from xml to view
     @Override
     public DropHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
@@ -57,7 +58,7 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
         return holder;
     }
 
-    //bind holer to tv_what TextView
+    //bind holder to tv_what TextView
     @Override
     public void onBindViewHolder(DropHolder holder, int position) {
         //changing to text

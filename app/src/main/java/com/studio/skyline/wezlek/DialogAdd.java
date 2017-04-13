@@ -40,7 +40,7 @@ public class DialogAdd extends DialogFragment {
                 case R.id.btn_dodaj_lek:
                     addAction();
 
-                    break;
+                   break;
             }
 
             dismiss();
