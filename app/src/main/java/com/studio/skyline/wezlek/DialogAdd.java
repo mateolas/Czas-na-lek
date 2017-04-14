@@ -26,11 +26,7 @@ public class DialogAdd extends DialogFragment {
     private SeekBar mInputWhen;
     private Button mBtnAdd;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Realm.init(getActivity());
-    }
+
 
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
         @Override
@@ -39,10 +35,8 @@ public class DialogAdd extends DialogFragment {
             switch (id) {
                 case R.id.btn_dodaj_lek:
                     addAction();
-
                    break;
             }
-
             dismiss();
         }
     };
@@ -51,16 +45,16 @@ public class DialogAdd extends DialogFragment {
         String what = mInputWhat.getText().toString();
         long now = System.currentTimeMillis();
 
-
+        Realm.init(getActivity());
        //default configuration
         Realm realm = Realm.getDefaultInstance();
 
-        Drop drop = new Drop(what, now, 0, false);
+        Drop drop= new Drop(what, now, 0, false);
+
 
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);
-
         realm.commitTransaction();
         realm.close();
     }
@@ -70,7 +64,6 @@ public class DialogAdd extends DialogFragment {
 
     @Nullable
     @Override
-
     //this method takes dialog_add xml file and converts it into View object (thanks to inflater)
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.dialog_add, container, false);
@@ -80,11 +73,10 @@ public class DialogAdd extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //we need to use view, because we're working on fragment not an activity
-        mInputWhat = (EditText) view.findViewById(R.id.et_nazwa_leku);
         mBtnClose = (ImageButton) view.findViewById(R.id.btn_close);
+        mInputWhat = (EditText) view.findViewById(R.id.et_nazwa_leku);
         mInputWhen = (SeekBar) view.findViewById(R.id.sb_hours_interval);
         mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
-
         mBtnClose.setOnClickListener(mBtnClickListener);
         mBtnAdd.setOnClickListener(mBtnClickListener);
     }

@@ -6,5 +6,6 @@
     <color name="colorLightBlueAfterClick">#88d6fd</color>
     <color name="colorLightBlueStroke">#88d6fd</color>
     <color name="colorToolbarDarkBlue">#055279</color>
+    <color name="colorDropDark">#3A055279</color>
 
 </resources>

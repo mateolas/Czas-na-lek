@@ -24,7 +24,6 @@ public class BucketRecyclerView extends RecyclerView {
     private List<View> mEmptyViews = Collections.emptyList();
 
 
-
     private AdapterDataObserver mObserver = new AdapterDataObserver() {
 
         //super was removed because it was empty
@@ -64,22 +63,24 @@ public class BucketRecyclerView extends RecyclerView {
         if (getAdapter() != null && !mEmptyViews.isEmpty() && !mNonEmptyViews.isEmpty()) {
             if (getAdapter().getItemCount() == 0) {
 
-                //show all empty views
+                //show all the empty views
                 Util.showViews(mEmptyViews);
                 //hide the RecyclerView
                 setVisibility(View.GONE);
+
                 //hide all the views which are meant to be hidden
                 Util.hideViews(mNonEmptyViews);
-            }
-        } else {
-            //hide all the empty views
-            Util.showViews(mNonEmptyViews);
-            //show the RecyclerView
-            setVisibility(View.VISIBLE);
-            //hide all the views which are meant to be hidden
-            Util.hideViews(mEmptyViews);
-        }
+            } else {
+                //hide all the empty views
+                Util.showViews(mNonEmptyViews);
 
+                //show the RecyclerView
+                setVisibility(View.VISIBLE);
+
+                //hide all the views which are meant to be hidden
+                Util.hideViews(mEmptyViews);
+            }
+        }
     }
 
     public BucketRecyclerView(Context context) {
@@ -101,22 +102,22 @@ public class BucketRecyclerView extends RecyclerView {
         if (adapter != null) {
             try {
                 adapter.registerAdapterDataObserver(mObserver);
-            }catch (IllegalStateException e){
+            } catch (IllegalStateException e) {
 
             }
-
+            mObserver.onChanged();
         }
-        mObserver.onChanged();
+
     }
 
     //... creates an array
     //changing from array to list
-    public void hideIfEmpty(View ...views) {
+    public void hideIfEmpty(View... views) {
         mNonEmptyViews = Arrays.asList(views);
 
     }
 
-    public void showIfEmpty(View ...emptyViews) {
+    public void showIfEmpty(View... emptyViews) {
         mEmptyViews = Arrays.asList(emptyViews);
 
     }

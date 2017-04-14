@@ -2,7 +2,6 @@ package com.studio.skyline.wezlek;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -28,11 +27,8 @@ public class ActivityMain extends AppCompatActivity {
     RealmResults<Drop> mResults;
     View mEmptyView;
     AdapterDrops mAdapter;
-
-
     //inner anonymous class --> need to check it !
     private View.OnClickListener mBtnAddListener = new View.OnClickListener(){
-
         @Override
         public void onClick(View v) {
             showDialogAdd();
@@ -80,15 +76,11 @@ public class ActivityMain extends AppCompatActivity {
         initBackgroundImage();
 
         //setting an adapter on RecyclerView
-        mRecycler.setAdapter(mAdapter);
+        //mRecycler.setAdapter(mAdapter);
 
         //creating LinearLayoutManager that how to display items to RecyclerView
-        LinearLayoutManager manager = new LinearLayoutManager(this);
-        mRecycler.setLayoutManager(manager);
-
-
-
-
+        //LinearLayoutManager manager = new LinearLayoutManager(this);
+        //mRecycler.setLayoutManager(manager);
 
        //Create an InitializerBuilder
        //Stetho.InitializerBuilder initializerBuilder =
@@ -109,9 +101,6 @@ public class ActivityMain extends AppCompatActivity {
 
         // Initialize Stetho with the Initializer
         //        Stetho.initialize(initializer);
-
-
-
 
         /*Stetho.initialize(
                 Stetho.newInitializerBuilder(this)

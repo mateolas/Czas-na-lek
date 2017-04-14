@@ -10,8 +10,7 @@
     <item>
         <shape>
 
-            <solid android:color="@color/colorToolbarDarkBlue"/>
-
+            <solid android:color="@color/colorDropDark"/>
         </shape>
     </item>
 
