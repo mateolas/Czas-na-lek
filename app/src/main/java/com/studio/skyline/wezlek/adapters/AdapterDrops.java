@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.studio.skyline.wezlek.R;
@@ -19,10 +20,16 @@ import io.realm.RealmResults;
  */
 
 
-public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> {
+public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+    //integer for footer
+    public static final int ITEM = 0;
+    public static final int FOOTER = 1;
+
 
     //inflater object which converts xml file to view object
     private LayoutInflater mInflater;
+
     //ArrayList to contain 100 numbers
     private RealmResults<Drop> mResults;
 
@@ -48,29 +55,50 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
 
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        //if statement if we have mResults NULL - no items in database
+        if (mResults == null || position < mResults.size()) {
+            return ITEM;
+        } else {
+            return FOOTER;
+        }
+        //we're returning a viewType int and using it in DropHolder viewType
+    }
+
     //changig row drop (a bar with medicine name) from xml to view
     @Override
-    public DropHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType==FOOTER){
+            View view = mInflater.inflate(R.layout.footer, parent, false);
+            //footerHolder class which we created below
+            return new FooterHolder(view);
+        }else {
 
-        //layourInflater converts xml file to java View object
-        View view = mInflater.inflate(R.layout.row_drop, parent, false);
-        DropHolder holder = new DropHolder(view);
-        return holder;
+            //layourInflater converts xml file to java View object
+            View view = mInflater.inflate(R.layout.row_drop, parent, false);
+            return new DropHolder(view);
+
+        }
     }
 
     //bind holder to tv_what TextView
     @Override
-    public void onBindViewHolder(DropHolder holder, int position) {
-        //changing to text
-        Drop drop = mResults.get(position);
-        //seting MtextView to proper drop.getWhat text
-        holder.mTextView.setText(drop.getWhat());
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if(holder instanceof DropHolder){
+            DropHolder dropHolder = (DropHolder) holder;
+            //changing to text
+            Drop drop = mResults.get(position);
+            //seting MtextView to proper drop.getWhat text
+            dropHolder.mTextView.setText(drop.getWhat());
+        }
+
     }
 
     @Override
     public int getItemCount() {
         //returning the number of items which we have in the table
-        return mResults.size();
+        return mResults.size() + 1;
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {
@@ -83,6 +111,22 @@ public class AdapterDrops extends RecyclerView.Adapter<AdapterDrops.DropHolder> 
             mTextView = (TextView) itemView.findViewById(R.id.tv_what);
         }
     }
+
+
+    //creating a FooterHolder
+    public static class FooterHolder extends RecyclerView.ViewHolder {
+
+        //initialising mTextView which is type DropHolder
+        Button mBtnAdd;
+
+        public FooterHolder(View itemView) {
+            super(itemView);
+            mBtnAdd = (Button)itemView.findViewById(R.id.btn_footer);
+        }
+    }
+
+
+
 
 
 }
