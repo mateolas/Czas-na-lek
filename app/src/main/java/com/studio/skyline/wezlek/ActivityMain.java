@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,6 +21,7 @@ import io.realm.RealmResults;
 
 public class ActivityMain extends AppCompatActivity {
 
+    //Variables/references
     public static final String TAG = "VIVZ";
     Toolbar mToolbar;
     Button mBtnAdd;
@@ -30,10 +30,12 @@ public class ActivityMain extends AppCompatActivity {
     RealmResults<Drop> mResults;
     View mEmptyView;
     AdapterDrops mAdapter;
-    //inner anonymous class --> need to check it !
+
+    //Inner anonymous class - On click listener for button
     private View.OnClickListener mBtnAddListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //runs Dialog after clicking a button
             showDialogAdd();
         }
     };
@@ -41,22 +43,23 @@ public class ActivityMain extends AppCompatActivity {
     private AddListener mAddListener = new AddListener() {
         @Override
         public void add() {
+            //runs Dialog after clicking a footer
             showDialogAdd();
         }
     };
 
-
+    //notification that Realm database has been updated
     private RealmChangeListener mChangeListener = new RealmChangeListener() {
         @Override
         public void onChange(Object element) {
             //mAdapter.notifyDataSetChanged();
-            Log.d(TAG, "onChange: was called");
             mAdapter.update(mResults);
 
         }
     };
 
     private void showDialogAdd() {
+        //DialogAdd - class where name and frequency of taking pills are located
         DialogAdd dialog = new DialogAdd();
         dialog.show(getSupportFragmentManager(), "Add");
     }
@@ -66,65 +69,42 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //initializing Realm Database
         Realm.init(this);
         mRealm = Realm.getDefaultInstance();
         //query in Realm. Query is stored in special arraylist RealResult type
         mResults = mRealm.where(Drop.class).findAllAsync();
 
+        //*
         //initializing items
+        //*
+
+        //initializng Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        //initializng Empty view (where no medecines were added)
         mEmptyView = findViewById(R.id.empty_drops);
+        //initializng button to add medicines
         mBtnAdd = (Button) findViewById(R.id.btn_dodaj_lek);
+        //initializing Recycler View
         mRecycler = (BucketRecyclerView) findViewById(R.id.rv_drops);
+        //adding a Divider
         mRecycler.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
+        //hiding Toolbar when no items are in Recycler View
         mRecycler.hideIfEmpty(mToolbar);
+        //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
+        //adding an Adapter view
         mAdapter = new AdapterDrops(this, mResults, mAddListener);
+        //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
+        //Button "Dodaj lek" listener
         mBtnAdd.setOnClickListener(mBtnAddListener);
+        //setting up a Toolbar
         setSupportActionBar(mToolbar);
-        //setting up a toolbar
+        //initializing background with Glide
         initBackgroundImage();
 
-        //setting an adapter on RecyclerView
-        //mRecycler.setAdapter(mAdapter);
-
-        //creating LinearLayoutManager that how to display items to RecyclerView
-        //LinearLayoutManager manager = new LinearLayoutManager(this);
-        //mRecycler.setLayoutManager(manager);
-
-        //Create an InitializerBuilder
-        //Stetho.InitializerBuilder initializerBuilder =
-        //        Stetho.newInitializerBuilder(this);
-
-        // Enable Chrome DevTools
-        //initializerBuilder.enableWebKitInspector(
-        //       Stetho.defaultInspectorModulesProvider(this)
-        //);
-
-        // Enable command line interface
-        //  initializerBuilder.enableDumpapp(
-        //        Stetho.defaultDumperPluginsProvider(this)
-        //);
-
-        // Use the InitializerBuilder to generate an Initializer
-        //       Stetho.Initializer initializer = initializerBuilder.build();
-
-        // Initialize Stetho with the Initializer
-        //        Stetho.initialize(initializer);
-
-        /*Stetho.initialize(
-                Stetho.newInitializerBuilder(this)
-                        .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-                        .enableWebKitInspector(RealmInspectorModulesProvider.builder(this)
-                        .withFolder(getCacheDir())
-
-                        .withMetaTables()
-                        .withDescendingOrder()
-                        .withLimit(1000)
-                        .databaseNamePattern(Pattern.compile(".+\\.realm"))
-                        .build())
-                        .build());*/
     }
 
 

@@ -16,8 +16,7 @@ public class AppBucketDrops extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
-        //RealmConfiguration configuration = new RealmConfiguration.Builder().build();
-        //Realm.setDefaultConfiguration(configuration);
+
 
     }
 }
