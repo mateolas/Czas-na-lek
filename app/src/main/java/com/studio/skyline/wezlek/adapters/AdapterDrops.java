@@ -33,10 +33,19 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //ArrayList to contain 100 numbers
     private RealmResults<Drop> mResults;
 
+    private AddListener mAddListener;
+
     //constructor which excepts context object and Realm results
     public AdapterDrops(Context context, RealmResults<Drop> results) {
         mInflater = LayoutInflater.from(context);
         update(results);
+    }
+
+
+    public AdapterDrops(Context context, RealmResults<Drop> results, AddListener listener) {
+        mInflater = LayoutInflater.from(context);
+        update(results);
+        mAddListener = listener;
     }
 
     //method which generates and return ArrayList with 100 values
@@ -114,7 +123,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
     //creating a FooterHolder
-    public static class FooterHolder extends RecyclerView.ViewHolder {
+    public class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //initialising mTextView which is type DropHolder
         Button mBtnAdd;
@@ -122,6 +131,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public FooterHolder(View itemView) {
             super(itemView);
             mBtnAdd = (Button)itemView.findViewById(R.id.btn_footer);
+            mBtnAdd.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            //were using from this place AddListener
+            mAddListener.add();
         }
     }
 

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
+import com.studio.skyline.wezlek.adapters.AddListener;
 import com.studio.skyline.wezlek.adapters.Divider;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.widgets.BucketRecyclerView;
@@ -30,9 +31,16 @@ public class ActivityMain extends AppCompatActivity {
     View mEmptyView;
     AdapterDrops mAdapter;
     //inner anonymous class --> need to check it !
-    private View.OnClickListener mBtnAddListener = new View.OnClickListener(){
+    private View.OnClickListener mBtnAddListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            showDialogAdd();
+        }
+    };
+
+    private AddListener mAddListener = new AddListener() {
+        @Override
+        public void add() {
             showDialogAdd();
         }
     };
@@ -50,7 +58,7 @@ public class ActivityMain extends AppCompatActivity {
 
     private void showDialogAdd() {
         DialogAdd dialog = new DialogAdd();
-        dialog.show(getSupportFragmentManager(),"Add");
+        dialog.show(getSupportFragmentManager(), "Add");
     }
 
 
@@ -71,7 +79,7 @@ public class ActivityMain extends AppCompatActivity {
         mRecycler.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
         mRecycler.hideIfEmpty(mToolbar);
         mRecycler.showIfEmpty(mEmptyView);
-        mAdapter = new  AdapterDrops(this,mResults);
+        mAdapter = new AdapterDrops(this, mResults, mAddListener);
         mRecycler.setAdapter(mAdapter);
         mBtnAdd.setOnClickListener(mBtnAddListener);
         setSupportActionBar(mToolbar);
@@ -85,8 +93,8 @@ public class ActivityMain extends AppCompatActivity {
         //LinearLayoutManager manager = new LinearLayoutManager(this);
         //mRecycler.setLayoutManager(manager);
 
-       //Create an InitializerBuilder
-       //Stetho.InitializerBuilder initializerBuilder =
+        //Create an InitializerBuilder
+        //Stetho.InitializerBuilder initializerBuilder =
         //        Stetho.newInitializerBuilder(this);
 
         // Enable Chrome DevTools
@@ -100,7 +108,7 @@ public class ActivityMain extends AppCompatActivity {
         //);
 
         // Use the InitializerBuilder to generate an Initializer
-         //       Stetho.Initializer initializer = initializerBuilder.build();
+        //       Stetho.Initializer initializer = initializerBuilder.build();
 
         // Initialize Stetho with the Initializer
         //        Stetho.initialize(initializer);
