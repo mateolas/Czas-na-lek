@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
 import com.studio.skyline.wezlek.adapters.AddListener;
 import com.studio.skyline.wezlek.adapters.Divider;
+import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.widgets.BucketRecyclerView;
 
@@ -95,11 +97,15 @@ public class ActivityMain extends AppCompatActivity {
         //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
         //adding an Adapter view
-        mAdapter = new AdapterDrops(this, mResults, mAddListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener);
         //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
         //Button "Dodaj lek" listener
         mBtnAdd.setOnClickListener(mBtnAddListener);
+        //objects which are responsible for swiping and removing items in Recycle View
+        SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
+        ItemTouchHelper helper = new ItemTouchHelper(callback);
+        helper.attachToRecyclerView(mRecycler) ;
         //setting up a Toolbar
         setSupportActionBar(mToolbar);
         //initializing background with Glide

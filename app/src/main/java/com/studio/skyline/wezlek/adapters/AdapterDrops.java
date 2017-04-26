@@ -13,6 +13,7 @@ import com.studio.skyline.wezlek.beans.Drop;
 
 import java.util.ArrayList;
 
+import io.realm.Realm;
 import io.realm.RealmResults;
 
 /**
@@ -20,7 +21,7 @@ import io.realm.RealmResults;
  */
 
 
-public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
     //integer for footer
     public static final int ITEM = 0;
@@ -34,17 +35,20 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private RealmResults<Drop> mResults;
 
     private AddListener mAddListener;
+    private Realm mRealm;
 
     //constructor which excepts context object and Realm results
-    public AdapterDrops(Context context, RealmResults<Drop> results) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
         mInflater = LayoutInflater.from(context);
+        mRealm = realm;
         update(results);
     }
 
 
-    public AdapterDrops(Context context, RealmResults<Drop> results, AddListener listener) {
+    public AdapterDrops(Context context, Realm realm,  RealmResults<Drop> results, AddListener listener) {
         mInflater = LayoutInflater.from(context);
         update(results);
+        mRealm = realm;
         mAddListener = listener;
     }
 
@@ -78,11 +82,11 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //changig row drop (a bar with medicine name) from xml to view
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType==FOOTER){
+        if (viewType == FOOTER) {
             View view = mInflater.inflate(R.layout.footer, parent, false);
             //footerHolder class which we created below
             return new FooterHolder(view);
-        }else {
+        } else {
 
             //layourInflater converts xml file to java View object
             View view = mInflater.inflate(R.layout.row_drop, parent, false);
@@ -94,7 +98,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //bind holder to tv_what TextView
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof DropHolder){
+        if (holder instanceof DropHolder) {
             DropHolder dropHolder = (DropHolder) holder;
             //changing to text
             Drop drop = mResults.get(position);
@@ -106,8 +110,25 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        //returning the number of items which we have in the table
-        return mResults.size() + 1;
+        //if no results in the Recyvler View, return 0, so show first screen
+        if (mResults == null || mResults.isEmpty()) {
+            return 0;
+        } else {
+            //returning the number of items which we have in the table
+            return mResults.size() + 1;
+        }
+    }
+
+    @Override
+    public void onSwipe(int position) {
+        //delete item with transaction from database
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).deleteFromRealm();
+            mRealm.commitTransaction();
+            notifyItemRemoved(position);
+
+        }
     }
 
     public static class DropHolder extends RecyclerView.ViewHolder {
@@ -130,7 +151,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         public FooterHolder(View itemView) {
             super(itemView);
-            mBtnAdd = (Button)itemView.findViewById(R.id.btn_footer);
+            mBtnAdd = (Button) itemView.findViewById(R.id.btn_footer);
             mBtnAdd.setOnClickListener(this);
 
         }
@@ -141,9 +162,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mAddListener.add();
         }
     }
-
-
-
 
 
 }
