@@ -26,6 +26,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //integer for footer
     public static final int ITEM = 0;
     public static final int FOOTER = 1;
+    private MarkListener mMarkListener;
 
 
     //inflater object which converts xml file to view object
@@ -44,12 +45,13 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         update(results);
     }
 
-
-    public AdapterDrops(Context context, Realm realm,  RealmResults<Drop> results, AddListener listener) {
+    //adding MarkListener to constructur
+    public AdapterDrops(Context context, Realm realm,  RealmResults<Drop> results, AddListener listener, MarkListener markListener) {
         mInflater = LayoutInflater.from(context);
         update(results);
         mRealm = realm;
         mAddListener = listener;
+        mMarkListener = markListener;
     }
 
     //method which generates and return ArrayList with 100 values
@@ -90,7 +92,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             //layourInflater converts xml file to java View object
             View view = mInflater.inflate(R.layout.row_drop, parent, false);
-            return new DropHolder(view);
+            return new DropHolder(view, mMarkListener);
 
         }
     }
@@ -103,7 +105,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //changing to text
             Drop drop = mResults.get(position);
             //seting MtextView to proper drop.getWhat text
-            dropHolder.mTextView.setText(drop.getWhat());
+            dropHolder.mTextWhat.setText(drop.getWhat());
         }
 
     }
@@ -131,14 +133,28 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public static class DropHolder extends RecyclerView.ViewHolder {
+    public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //initialising mTextView which is type DropHolder
-        TextView mTextView;
+        TextView mTextWhat;
+        MarkListener mMarkListener;
+        
 
-        public DropHolder(View itemView) {
+        //"one row" of RecyclerView
+        //adding MarkListener to constructor
+        public DropHolder(View itemView, MarkListener listener) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.tv_what);
+            itemView.setOnClickListener(this);
+            mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
+            mMarkListener = listener;
+        }
+
+        @Override
+        public void onClick(View v) {
+            // we can't use just show method, we need to use FragmentManager
+            //to use FragmentManager from MainActivity we need to implement an interface
+            //interface name - MarkListener
+            mMarkListener.onMark(getAdapterPosition());
         }
     }
 

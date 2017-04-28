@@ -13,9 +13,11 @@ import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
 import com.studio.skyline.wezlek.adapters.AddListener;
 import com.studio.skyline.wezlek.adapters.Divider;
+import com.studio.skyline.wezlek.adapters.MarkListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.widgets.BucketRecyclerView;
+import com.studio.skyline.wezlek.widgets.DialogMark;
 
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
@@ -60,10 +62,30 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    //we can implement MarkListener to the class
+    //or we can use variable which stores anonymous implementation
+
+    private MarkListener mMarkListener = new MarkListener() {
+        @Override
+        public void onMark(int position) {
+            showDialogMark(position);
+        }
+    };
+
+
     private void showDialogAdd() {
         //DialogAdd - class where name and frequency of taking pills are located
         DialogAdd dialog = new DialogAdd();
         dialog.show(getSupportFragmentManager(), "Add");
+    }
+
+    private void showDialogMark(int position){
+        DialogMark dialog = new DialogMark();
+        //we need to past position to constructor in special way
+        Bundle bundle = new Bundle();
+        bundle.putInt("POSITION", position);
+        dialog.setArguments(bundle);
+        dialog.show(getSupportFragmentManager(),"Mark");
     }
 
 
@@ -97,7 +119,7 @@ public class ActivityMain extends AppCompatActivity {
         //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
         //adding an Adapter view
-        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener,mMarkListener);
         //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
         //Button "Dodaj lek" listener
