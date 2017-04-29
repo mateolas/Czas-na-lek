@@ -8,10 +8,12 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
 import com.studio.skyline.wezlek.adapters.AddListener;
+import com.studio.skyline.wezlek.adapters.CompleteListener;
 import com.studio.skyline.wezlek.adapters.Divider;
 import com.studio.skyline.wezlek.adapters.MarkListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
@@ -72,6 +74,14 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    //anonymous interface
+    private CompleteListener mCompleteListener = new CompleteListener() {
+        @Override
+        public void onComplete(int position) {
+            Toast.makeText(ActivityMain.this,"position in activity"+position,Toast.LENGTH_SHORT).show();
+            mAdapter.markComplete(position);
+        }
+    };
 
     private void showDialogAdd() {
         //DialogAdd - class where name and frequency of taking pills are located
@@ -85,6 +95,7 @@ public class ActivityMain extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putInt("POSITION", position);
         dialog.setArguments(bundle);
+        dialog.setCompleteListener(mCompleteListener);
         dialog.show(getSupportFragmentManager(),"Mark");
     }
 

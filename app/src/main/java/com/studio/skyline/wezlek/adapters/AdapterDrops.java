@@ -1,6 +1,8 @@
 package com.studio.skyline.wezlek.adapters;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.TextView;
 
 import com.studio.skyline.wezlek.R;
 import com.studio.skyline.wezlek.beans.Drop;
+import com.studio.skyline.wezlek.extras.Util;
 
 import java.util.ArrayList;
 
@@ -98,6 +101,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     //bind holder to tv_what TextView
+    //this method is called every time we need to show particular item
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DropHolder) {
@@ -106,6 +110,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Drop drop = mResults.get(position);
             //seting MtextView to proper drop.getWhat text
             dropHolder.mTextWhat.setText(drop.getWhat());
+            dropHolder.setBackground(drop.isCompleted());
         }
 
     }
@@ -133,21 +138,40 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    public void markComplete(int position) {
+        //checking that item is not a footer
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).setCompleted(true);
+            mRealm.commitTransaction();
+            notifyItemChanged(position);
+        }
+    }
+
     public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         //initialising mTextView which is type DropHolder
         TextView mTextWhat;
+        TextView mTextWhen;
         MarkListener mMarkListener;
-        
+        Context mContext;
+        View mItemView;
 
         //"one row" of RecyclerView
         //adding MarkListener to constructor
         public DropHolder(View itemView, MarkListener listener) {
             super(itemView);
+            mItemView = itemView;
+            mContext = itemView.getContext();
             itemView.setOnClickListener(this);
             mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
             mMarkListener = listener;
         }
+
+        public void setWhat(String what){
+            mTextWhat.setText(what);
+        }
+
 
         @Override
         public void onClick(View v) {
@@ -155,6 +179,22 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //to use FragmentManager from MainActivity we need to implement an interface
             //interface name - MarkListener
             mMarkListener.onMark(getAdapterPosition());
+        }
+
+        public void setBackground(boolean completed) {
+            Drawable drawable;
+            if(completed) {
+               drawable = ContextCompat.getDrawable(mContext,R.color.colorLightBlueAfterClick);
+            }else{
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.bg_row_drop);
+            }
+            /*if(Build.VERSION.SDK_INT > 15){
+                mItemView.setBackground(drawable);
+            } else{
+                mItemView.setBackgroundDrawable(drawable);
+            }*/
+            Util.setBackground(mItemView,drawable);
+
         }
     }
 

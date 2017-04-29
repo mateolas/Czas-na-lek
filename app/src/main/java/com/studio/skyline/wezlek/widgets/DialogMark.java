@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.studio.skyline.wezlek.R;
+import com.studio.skyline.wezlek.adapters.CompleteListener;
 
 /**
  * Created by aneimat on 28.04.2017.
@@ -29,14 +29,28 @@ public class DialogMark extends DialogFragment {
             switch (v.getId()) {
                 case R.id.btn_completed:
                     //TODO handle the action here to mark the item as complete
+                    markAsComplete();
                     break;
                 case R.id.btn_restart:
                     //TODO handle the action here to restart the timer
+
                     break;
             }
             dismiss();
         }
     };
+
+    private CompleteListener mListener;
+
+    private void markAsComplete() {
+
+        Bundle arguments = getArguments();
+        //we need to comunicate with adapter to mark item as completed
+        if (mListener != null && arguments != null) {
+            int position = arguments.getInt("POSITION");
+            mListener.onComplete(position);
+        }
+    }
 
     @Nullable
     @Override
@@ -55,11 +69,11 @@ public class DialogMark extends DialogFragment {
         mBtnCompleted.setOnClickListener(mBtnClickListener);
         mBtnRestart.setOnClickListener(mBtnClickListener);
 
-        Bundle arguments = getArguments();
-        if(arguments!= null) {
-            int position = arguments.getInt("POSITION");
-            Toast.makeText(getActivity(), "position"+position, Toast.LENGTH_SHORT).show();
-        }
 
     }
+
+    public void setCompleteListener(CompleteListener mCompleteListener) {
+        mListener = mCompleteListener;
+    }
 }
+
