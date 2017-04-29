@@ -32,7 +32,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     //inflater object which converts xml file to view object
     private LayoutInflater mInflater;
 
-    //ArrayList to contain 100 numbers
+    //ArrayList to contain 100 numbers - not used anymore
     private RealmResults<Drop> mResults;
 
     private AddListener mAddListener;
