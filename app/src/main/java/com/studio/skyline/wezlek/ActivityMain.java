@@ -1,5 +1,6 @@
 package com.studio.skyline.wezlek;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,13 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
 import com.studio.skyline.wezlek.adapters.AddListener;
 import com.studio.skyline.wezlek.adapters.CompleteListener;
 import com.studio.skyline.wezlek.adapters.Divider;
+import com.studio.skyline.wezlek.adapters.Filter;
 import com.studio.skyline.wezlek.adapters.MarkListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
 import com.studio.skyline.wezlek.beans.Drop;
@@ -81,7 +82,7 @@ public class ActivityMain extends AppCompatActivity {
     private CompleteListener mCompleteListener = new CompleteListener() {
         @Override
         public void onComplete(int position) {
-            Toast.makeText(ActivityMain.this, "position in activity" + position, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(ActivityMain.this, "position in activity" + position, Toast.LENGTH_SHORT).show();
             mAdapter.markComplete(position);
         }
     };
@@ -107,23 +108,20 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        //initializing Realm Database
-        Realm.init(this);
-        mRealm = Realm.getDefaultInstance();
-        //query in Realm. Query is stored in special arraylist RealResult type
-        mResults = mRealm.where(Drop.class).findAllAsync();
-
-        //*
-        //initializing items
-        //*
-
         //initializng Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        //initializng Empty view (where no medecines were added)
-        mEmptyView = findViewById(R.id.empty_drops);
+        //setting up a Toolbar
+        setSupportActionBar(mToolbar);
         //initializng button to add medicines
         mBtnAdd = (Button) findViewById(R.id.btn_dodaj_lek);
+        //Button "Dodaj lek" listener
+        mBtnAdd.setOnClickListener(mBtnAddListener);
+        //initializing Realm Database
+        mRealm = Realm.getDefaultInstance();
+        int filterOption = load();
+        loadResults(filterOption);
+        //initializng Empty view (where no medecines were added)
+        mEmptyView = findViewById(R.id.empty_drops);
         //initializing Recycler View
         mRecycler = (BucketRecyclerView) findViewById(R.id.rv_drops);
         //adding a Divider
@@ -136,17 +134,13 @@ public class ActivityMain extends AppCompatActivity {
         mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
         //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
-        //Button "Dodaj lek" listener
-        mBtnAdd.setOnClickListener(mBtnAddListener);
+        //query in Realm. Query is stored in special arraylist RealResult type
         //objects which are responsible for swiping and removing items in Recycle View
         SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(mRecycler);
-        //setting up a Toolbar
-        setSupportActionBar(mToolbar);
         //initializing background with Glide
         initBackgroundImage();
-
     }
 
     @Override
@@ -158,29 +152,71 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        boolean handled = true;
+        int filterOption = Filter.NONE;
         switch (id) {
             case R.id.action_add:
                 showDialogAdd();
-                return true;
+                break;
             case R.id.action_sort_ascending_date:
-                //query the database to show proper items
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
-                mResults.addChangeListener(mChangeListener);
-                return true;
+                filterOption = Filter.LEAST_TIME_LEFT;
+                save(Filter.LEAST_TIME_LEFT);
+                break;
             case R.id.action_sort_descending_date:
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
-                mResults.addChangeListener(mChangeListener);
-                return true;
+                filterOption = Filter.MOST_TIME_LEFT;
+                save(Filter.MOST_TIME_LEFT);
+                break;
             case R.id.action_show_complete:
-                mResults = mRealm.where(Drop.class).equalTo("completed",true).findAllAsync();
-                mResults.addChangeListener(mChangeListener);
-                return true;
+                filterOption = Filter.COMPLETE;
+                save(Filter.COMPLETE);
+                break;
             case R.id.action_show_incomplete:
-                mResults = mRealm.where(Drop.class).equalTo("completed",false).findAllAsync();
-                mResults.addChangeListener(mChangeListener);
-                return true;
+                filterOption = Filter.INCOMPLETE;
+                save(Filter.INCOMPLETE);
+                break;
+            default:
+                handled = false;
+                break;
         }
-        return super.onOptionsItemSelected(item);
+        loadResults(filterOption);
+        return handled;
+    }
+
+    //loading proper option into database
+    private void loadResults(int filterOption) {
+        switch (filterOption) {
+            case Filter.NONE:
+                mResults = mRealm.where(Drop.class).findAllAsync();
+                break;
+            case Filter.LEAST_TIME_LEFT:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
+                break;
+            case Filter.MOST_TIME_LEFT:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
+                break;
+            case Filter.COMPLETE:
+                mResults = mRealm.where(Drop.class).equalTo("completed", true).findAllAsync();
+                break;
+            case Filter.INCOMPLETE:
+                mResults = mRealm.where(Drop.class).equalTo("completed", false).findAllAsync();
+                break;
+        }
+        mResults.addChangeListener(mChangeListener);
+    }
+
+    //method to save info in the Shared Preferences file
+    private void save(int filterOption) {
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("filter", filterOption);
+        editor.apply();
+    }
+
+    //method to load info from the Shared Preferences file
+    private int load() {
+        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        int filterOption = pref.getInt("filter", Filter.NONE);
+        return filterOption;
     }
 
     @Override

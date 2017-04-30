@@ -73,17 +73,11 @@ public class DialogAdd extends DialogFragment {
         calendar.set(Calendar.HOUR,0);
         calendar.set(Calendar.MINUTE,0);
         calendar.set(Calendar.SECOND,0);
-
-
-
         long now = System.currentTimeMillis();
         Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
-
         Drop drop = new Drop(what, now, calendar.getTimeInMillis() , false);
-
-
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);
@@ -112,6 +106,6 @@ public class DialogAdd extends DialogFragment {
         mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
         mBtnClose.setOnClickListener(mBtnClickListener);
         mBtnAdd.setOnClickListener(mBtnClickListener);
-        mTimeLeft.setOnSeekBarChangeListener(mBarListener);
+        //mTimeLeft.setOnSeekBarChangeListener(mBarListener);
     }
 }
