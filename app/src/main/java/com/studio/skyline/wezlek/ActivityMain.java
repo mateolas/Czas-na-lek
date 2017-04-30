@@ -26,6 +26,7 @@ import com.studio.skyline.wezlek.widgets.DialogMark;
 import io.realm.Realm;
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class ActivityMain extends AppCompatActivity {
 
@@ -80,7 +81,7 @@ public class ActivityMain extends AppCompatActivity {
     private CompleteListener mCompleteListener = new CompleteListener() {
         @Override
         public void onComplete(int position) {
-            Toast.makeText(ActivityMain.this,"position in activity"+position,Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityMain.this, "position in activity" + position, Toast.LENGTH_SHORT).show();
             mAdapter.markComplete(position);
         }
     };
@@ -91,14 +92,14 @@ public class ActivityMain extends AppCompatActivity {
         dialog.show(getSupportFragmentManager(), "Add");
     }
 
-    private void showDialogMark(int position){
+    private void showDialogMark(int position) {
         DialogMark dialog = new DialogMark();
         //we need to past position to constructor in special way
         Bundle bundle = new Bundle();
         bundle.putInt("POSITION", position);
         dialog.setArguments(bundle);
         dialog.setCompleteListener(mCompleteListener);
-        dialog.show(getSupportFragmentManager(),"Mark");
+        dialog.show(getSupportFragmentManager(), "Mark");
     }
 
 
@@ -132,7 +133,7 @@ public class ActivityMain extends AppCompatActivity {
         //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
         //adding an Adapter view
-        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener,mMarkListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
         //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
         //Button "Dodaj lek" listener
@@ -140,7 +141,7 @@ public class ActivityMain extends AppCompatActivity {
         //objects which are responsible for swiping and removing items in Recycle View
         SimpleTouchCallback callback = new SimpleTouchCallback(mAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(mRecycler) ;
+        helper.attachToRecyclerView(mRecycler);
         //setting up a Toolbar
         setSupportActionBar(mToolbar);
         //initializing background with Glide
@@ -157,9 +158,27 @@ public class ActivityMain extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        switch(id){
+        switch (id) {
             case R.id.action_add:
-                Toast.makeText(ActivityMain.this,"Add was clicked",Toast.LENGTH_SHORT).show();
+                showDialogAdd();
+                return true;
+            case R.id.action_sort_ascending_date:
+                //query the database to show proper items
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
+                mResults.addChangeListener(mChangeListener);
+                return true;
+            case R.id.action_sort_descending_date:
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
+                mResults.addChangeListener(mChangeListener);
+                return true;
+            case R.id.action_show_complete:
+                mResults = mRealm.where(Drop.class).equalTo("completed",true).findAllAsync();
+                mResults.addChangeListener(mChangeListener);
+                return true;
+            case R.id.action_show_incomplete:
+                mResults = mRealm.where(Drop.class).equalTo("completed",false).findAllAsync();
+                mResults.addChangeListener(mChangeListener);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
