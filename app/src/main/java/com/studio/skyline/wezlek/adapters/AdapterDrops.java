@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,7 +110,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //changing to text
             Drop drop = mResults.get(position);
             //seting MtextView to proper drop.getWhat text
-            dropHolder.mTextWhat.setText(drop.getWhat());
+            dropHolder.setWhat(drop.getWhat());
+            dropHolder.setWhen(drop.getWhen());
             dropHolder.setBackground(drop.isCompleted());
         }
 
@@ -165,6 +167,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
             mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
+            mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
             mMarkListener = listener;
         }
 
@@ -194,6 +197,11 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mItemView.setBackgroundDrawable(drawable);
             }*/
             Util.setBackground(mItemView,drawable);
+
+        }
+
+        public void setWhen(long when) {
+            mTextWhen.setText(DateUtils.getRelativeTimeSpanString(when,System.currentTimeMillis(),DateUtils.DAY_IN_MILLIS,0));
 
         }
     }

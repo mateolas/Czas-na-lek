@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.studio.skyline.wezlek.beans.Drop;
+
+import java.util.Calendar;
 
 import io.realm.Realm;
 
@@ -23,9 +27,9 @@ public class DialogAdd extends DialogFragment {
 
     private ImageButton mBtnClose;
     private EditText mInputWhat;
-    private SeekBar mInputWhen;
+    private DatePicker mInputWhen;
+    private SeekBar mTimeLeft;
     private Button mBtnAdd;
-
 
 
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
@@ -35,21 +39,49 @@ public class DialogAdd extends DialogFragment {
             switch (id) {
                 case R.id.btn_dodaj_lek:
                     addAction();
-                   break;
+                    break;
             }
             dismiss();
         }
     };
 
+    private SeekBar.OnSeekBarChangeListener mBarListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            //Toast.makeText(getActivity(),"TEST",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            //Toast.makeText(getActivity(),"START",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            //Toast.makeText(getActivity(),"STOP",Toast.LENGTH_SHORT).show();
+        }
+    };
+
     private void addAction() {
         String what = mInputWhat.getText().toString();
-        long now = System.currentTimeMillis();
+        String date = mInputWhen.getDayOfMonth() + "/" + mInputWhen.getMonth() + "/" + mInputWhen.getYear();
+        Toast.makeText(getActivity(), date, Toast.LENGTH_SHORT).show();
+        //changing date with Day/Month/Year into miliseconds
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, mInputWhen.getDayOfMonth());
+        calendar.set(Calendar.MONTH, mInputWhen.getMonth());
+        calendar.set(Calendar.HOUR,0);
+        calendar.set(Calendar.MINUTE,0);
+        calendar.set(Calendar.SECOND,0);
 
+
+
+        long now = System.currentTimeMillis();
         Realm.init(getActivity());
-       //default configuration
+        //default configuration
         Realm realm = Realm.getDefaultInstance();
 
-        Drop drop= new Drop(what, now, 0, false);
+        Drop drop = new Drop(what, now, calendar.getTimeInMillis() , false);
 
 
         //copying to table, so we need to make a transaction
@@ -75,9 +107,11 @@ public class DialogAdd extends DialogFragment {
         //we need to use view, because we're working on fragment not an activity
         mBtnClose = (ImageButton) view.findViewById(R.id.btn_close);
         mInputWhat = (EditText) view.findViewById(R.id.et_nazwa_leku);
-        mInputWhen = (SeekBar) view.findViewById(R.id.sb_hours_interval);
+        mInputWhen = (DatePicker) view.findViewById(R.id.bpv_date);
+        mTimeLeft = (SeekBar) view.findViewById(R.id.sb_hours_interval);
         mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
         mBtnClose.setOnClickListener(mBtnClickListener);
         mBtnAdd.setOnClickListener(mBtnClickListener);
+        mTimeLeft.setOnSeekBarChangeListener(mBarListener);
     }
 }

@@ -47,14 +47,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_co_ile_godzin_przyjmowac_lek"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="0dp" />
+
+
+    <DatePicker
+        android:id="@+id/bpv_date"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/sb_hours_interval"></DatePicker>
 
     <Button
         android:id="@+id/btn_dodaj_lek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/sb_hours_interval"
-        android:layout_marginTop="80dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
         android:text="@string/btn_dodaj"
         android:textAllCaps="false" />
+
+
 </RelativeLayout>
