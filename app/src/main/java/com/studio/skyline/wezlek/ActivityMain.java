@@ -1,6 +1,5 @@
 package com.studio.skyline.wezlek;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -118,7 +117,7 @@ public class ActivityMain extends AppCompatActivity {
         mBtnAdd.setOnClickListener(mBtnAddListener);
         //initializing Realm Database
         mRealm = Realm.getDefaultInstance();
-        int filterOption = load();
+        int filterOption = AppBucketDrops.load(this);
         loadResults(filterOption);
         //initializng Empty view (where no medecines were added)
         mEmptyView = findViewById(R.id.empty_drops);
@@ -160,24 +159,21 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case R.id.action_sort_ascending_date:
                 filterOption = Filter.LEAST_TIME_LEFT;
-                save(Filter.LEAST_TIME_LEFT);
                 break;
             case R.id.action_sort_descending_date:
                 filterOption = Filter.MOST_TIME_LEFT;
-                save(Filter.MOST_TIME_LEFT);
                 break;
             case R.id.action_show_complete:
                 filterOption = Filter.COMPLETE;
-                save(Filter.COMPLETE);
                 break;
             case R.id.action_show_incomplete:
                 filterOption = Filter.INCOMPLETE;
-                save(Filter.INCOMPLETE);
                 break;
             default:
                 handled = false;
                 break;
         }
+        AppBucketDrops.save(this,filterOption);
         loadResults(filterOption);
         return handled;
     }
@@ -204,20 +200,7 @@ public class ActivityMain extends AppCompatActivity {
         mResults.addChangeListener(mChangeListener);
     }
 
-    //method to save info in the Shared Preferences file
-    private void save(int filterOption) {
-        SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("filter", filterOption);
-        editor.apply();
-    }
 
-    //method to load info from the Shared Preferences file
-    private int load() {
-        SharedPreferences pref = getPreferences(MODE_PRIVATE);
-        int filterOption = pref.getInt("filter", Filter.NONE);
-        return filterOption;
-    }
 
     @Override
     protected void onStart() {

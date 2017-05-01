@@ -8,4 +8,5 @@
     <string name="rozpocznij_odliczanie">Rozpocznij odliczanie</string>
     <string name="end_curation">Zakończ kurację</string>
     <string name="lek_zosta_za_yty">Lek został zażyty</string>
+    <string name="str_no_items">Brak leków do wyświetlenia</string>
 </resources>

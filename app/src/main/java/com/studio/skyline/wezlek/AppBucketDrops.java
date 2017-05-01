@@ -1,6 +1,11 @@
 package com.studio.skyline.wezlek;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.studio.skyline.wezlek.adapters.Filter;
 
 import io.realm.Realm;
 
@@ -18,5 +23,20 @@ public class AppBucketDrops extends Application {
         Realm.init(this);
 
 
+    }
+
+    //method to save info in the Shared Preferences file
+    public static void save(Context context, int filterOption) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("filter", filterOption);
+        editor.apply();
+    }
+
+    //method to load info from the Shared Preferences file
+    public static int load(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        int filterOption = pref.getInt("filter", Filter.NONE);
+        return filterOption;
     }
 }
