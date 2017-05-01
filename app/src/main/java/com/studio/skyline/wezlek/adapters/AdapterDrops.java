@@ -34,8 +34,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int ITEM = 0;
     public static final int NO_ITEM = 1;
     public static final int FOOTER = 2;
+    private final ResetListener mResetListener;
     private MarkListener mMarkListener;
-
 
     //inflater object which converts xml file to view object
     private LayoutInflater mInflater;
@@ -48,21 +48,15 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Realm mRealm;
     private Context mContext;
 
-    //constructor which excepts context object and Realm results
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results) {
-        mInflater = LayoutInflater.from(context);
-        mRealm = realm;
-        update(results);
-    }
-
     //adding MarkListener to constructur
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener,ResetListener resetListener) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         update(results);
         mRealm = realm;
         mAddListener = listener;
         mMarkListener = markListener;
+        mResetListener = resetListener;
 
     }
 
@@ -175,7 +169,13 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mResults.get(position).deleteFromRealm();
             mRealm.commitTransaction();
             notifyItemRemoved(position);
+        }
+        resetFilterIfEmpty();
+    }
 
+    private void resetFilterIfEmpty() {
+        if(mResults.isEmpty() && (mFilterOption == Filter.COMPLETE || mFilterOption == Filter.INCOMPLETE )){
+            mResetListener.onReset();
         }
     }
 

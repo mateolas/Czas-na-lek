@@ -19,6 +19,7 @@ import com.studio.skyline.wezlek.adapters.CompleteListener;
 import com.studio.skyline.wezlek.adapters.Divider;
 import com.studio.skyline.wezlek.adapters.Filter;
 import com.studio.skyline.wezlek.adapters.MarkListener;
+import com.studio.skyline.wezlek.adapters.ResetListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.widgets.BucketRecyclerView;
@@ -87,6 +88,13 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private ResetListener mResetListener = new ResetListener() {
+        @Override
+        public void onReset() {
+            AppBucketDrops.save(ActivityMain.this,Filter.NONE);
+            loadResults(Filter.NONE);
+        }
+    };
     private void showDialogAdd() {
         //DialogAdd - class where name and frequency of taking pills are located
         DialogAdd dialog = new DialogAdd();
@@ -133,7 +141,7 @@ public class ActivityMain extends AppCompatActivity {
         //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
         //adding an Adapter view
-        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
+        mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener, mResetListener);
         mAdapter.setHasStableIds(true);
         //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
