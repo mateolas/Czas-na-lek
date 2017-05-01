@@ -2,6 +2,7 @@ package com.studio.skyline.wezlek;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -125,12 +126,15 @@ public class ActivityMain extends AppCompatActivity {
         mRecycler = (BucketRecyclerView) findViewById(R.id.rv_drops);
         //adding a Divider
         mRecycler.addItemDecoration(new Divider(this, LinearLayoutManager.VERTICAL));
+        //setting an animation
+        mRecycler.setItemAnimator(new DefaultItemAnimator());
         //hiding Toolbar when no items are in Recycler View
         mRecycler.hideIfEmpty(mToolbar);
         //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
         //adding an Adapter view
         mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener);
+        mAdapter.setHasStableIds(true);
         //setting an adapter to Recycler
         mRecycler.setAdapter(mAdapter);
         //query in Realm. Query is stored in special arraylist RealResult type
