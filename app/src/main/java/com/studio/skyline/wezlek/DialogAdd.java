@@ -88,6 +88,12 @@ public class DialogAdd extends DialogFragment {
     public DialogAdd() {
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogTheme);
+    }
+
     @Nullable
     @Override
     //this method takes dialog_add xml file and converts it into View object (thanks to inflater)
