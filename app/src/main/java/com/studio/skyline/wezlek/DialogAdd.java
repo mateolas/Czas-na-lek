@@ -7,15 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import com.studio.skyline.wezlek.beans.Drop;
-
-import java.util.Calendar;
+import com.studio.skyline.wezlek.widgets.BucketPickerView;
 
 import io.realm.Realm;
 
@@ -27,7 +24,7 @@ public class DialogAdd extends DialogFragment {
 
     private ImageButton mBtnClose;
     private EditText mInputWhat;
-    private DatePicker mInputWhen;
+    private BucketPickerView mInputWhen;
     private SeekBar mTimeLeft;
     private Button mBtnAdd;
 
@@ -64,20 +61,11 @@ public class DialogAdd extends DialogFragment {
 
     private void addAction() {
         String what = mInputWhat.getText().toString();
-        String date = mInputWhen.getDayOfMonth() + "/" + mInputWhen.getMonth() + "/" + mInputWhen.getYear();
-        Toast.makeText(getActivity(), date, Toast.LENGTH_SHORT).show();
-        //changing date with Day/Month/Year into miliseconds
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_MONTH, mInputWhen.getDayOfMonth());
-        calendar.set(Calendar.MONTH, mInputWhen.getMonth());
-        calendar.set(Calendar.HOUR,0);
-        calendar.set(Calendar.MINUTE,0);
-        calendar.set(Calendar.SECOND,0);
         long now = System.currentTimeMillis();
         Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
-        Drop drop = new Drop(what, now, calendar.getTimeInMillis() , false);
+        Drop drop = new Drop(what, now, mInputWhen.getTime() , false);
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);
@@ -107,7 +95,7 @@ public class DialogAdd extends DialogFragment {
         //we need to use view, because we're working on fragment not an activity
         mBtnClose = (ImageButton) view.findViewById(R.id.btn_close);
         mInputWhat = (EditText) view.findViewById(R.id.et_nazwa_leku);
-        mInputWhen = (DatePicker) view.findViewById(R.id.bpv_date);
+        mInputWhen = (BucketPickerView) view.findViewById(R.id.bpv_date);
         mTimeLeft = (SeekBar) view.findViewById(R.id.sb_hours_interval);
         mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
         mBtnClose.setOnClickListener(mBtnClickListener);

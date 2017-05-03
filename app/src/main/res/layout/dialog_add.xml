@@ -50,11 +50,11 @@
         android:layout_marginTop="0dp" />
 
 
-    <DatePicker
+    <com.studio.skyline.wezlek.widgets.BucketPickerView
         android:id="@+id/bpv_date"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/sb_hours_interval"></DatePicker>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sb_hours_interval"></com.studio.skyline.wezlek.widgets.BucketPickerView>
 
     <Button
         android:id="@+id/btn_dodaj_lek"

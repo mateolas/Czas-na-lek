@@ -3,12 +3,17 @@
 
     <item>
         <shape>
-            <solid android:color="@color/colorLightBlueStroke"/>
-            <size android:width="96dp"/>
+            <solid android:color="@color/colorLightBlueStroke" />
+            <size android:width="96dp" />
+            <corners
+                android:bottomLeftRadius="4dp"
+                android:bottomRightRadius="4dp" />
         </shape>
 
     </item>
-    <item android:drawable="@drawable/ic_arrow_drop_down" android:gravity="center">
+    <item
+        android:drawable="@drawable/ic_arrow_drop_down"
+        android:gravity="center">
 
     </item>
 </layer-list>
