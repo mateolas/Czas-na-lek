@@ -1,72 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorToolbarDarkBlue">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/tv_title_vertical_margin"
-        android:layout_marginTop="@dimen/tv_title_vertical_margin"
-        android:text="@string/dodaj_lek"
-        android:textSize="@dimen/tv_title_font_size" />
-
-    <ImageButton
-        android:id="@+id/btn_close"
-        android:layout_width="12dp"
-        android:layout_height="12dp"
-        android:layout_alignBottom="@id/tv_title"
-        android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/tv_title"
-        android:background="@null"
-        android:src="@drawable/ic_close" />
-
-    <EditText
-        android:id="@+id/et_nazwa_leku"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_close"
-        android:hint="@string/ev_podaj_nazw_leku"
-        android:inputType="textVisiblePassword"
-        android:padding="16dp" />
+        android:layout_height="match_parent"
+        android:background="@color/colorToolbarDarkBlue">
 
-    <TextView
-        android:id="@+id/tv_co_ile_godzin_przyjmowac_lek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_nazwa_leku"
-        android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/tv_co_il_godzin_nalezy_przyjmowa_lek"
-        android:textSize="@dimen/tv_title_font_size" />
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/tv_title_vertical_margin"
+            android:layout_marginTop="@dimen/tv_title_vertical_margin"
+            android:text="@string/dodaj_lek"
+            android:textSize="@dimen/tv_title_font_size" />
 
-    <SeekBar
-        android:id="@+id/sb_hours_interval"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_co_ile_godzin_przyjmowac_lek"
-        android:layout_marginTop="0dp" />
+        <ImageButton
+            android:id="@+id/btn_close"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_alignBottom="@id/tv_title"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/tv_title"
+            android:background="@null"
+            android:src="@drawable/ic_close" />
+
+        <EditText
+            android:id="@+id/et_nazwa_leku"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_close"
+            android:hint="@string/ev_podaj_nazw_leku"
+            android:inputType="textVisiblePassword"
+            android:padding="16dp" />
+
+        <TextView
+            android:id="@+id/tv_co_ile_godzin_przyjmowac_lek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/et_nazwa_leku"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/tv_co_il_godzin_nalezy_przyjmowa_lek"
+            android:textSize="@dimen/tv_title_font_size" />
+
+        <SeekBar
+            android:id="@+id/sb_hours_interval"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_co_ile_godzin_przyjmowac_lek"
+            android:layout_marginTop="0dp" />
 
 
-    <com.studio.skyline.wezlek.widgets.BucketPickerView
-        android:id="@+id/bpv_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/sb_hours_interval"></com.studio.skyline.wezlek.widgets.BucketPickerView>
+        <com.studio.skyline.wezlek.widgets.BucketPickerView
+            android:id="@+id/bpv_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="160dp"
+            android:layout_below="@+id/sb_hours_interval"></com.studio.skyline.wezlek.widgets.BucketPickerView>
 
-    <Button
-        android:id="@+id/btn_dodaj_lek"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:text="@string/btn_dodaj"
-        android:textAllCaps="false" />
+        <Button
+            android:id="@+id/btn_dodaj_lek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:text="@string/btn_dodaj"
+            android:textAllCaps="false" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+
+
+</ScrollView>
+

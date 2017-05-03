@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -17,7 +18,7 @@ import java.util.Calendar;
  * Created by aneimat on 03.05.2017.
  */
 
-public class BucketPickerView extends LinearLayout {
+public class BucketPickerView extends LinearLayout implements View.OnTouchListener {
     private Calendar mCalendar;
     private TextView mTextDate;
     private TextView mTextMonth;
@@ -51,6 +52,9 @@ public class BucketPickerView extends LinearLayout {
         mTextDate = (TextView) this.findViewById(R.id.tv_date);
         mTextMonth = (TextView) this.findViewById(R.id.tv_month);
         mTextYear = (TextView) this.findViewById(R.id.tv_year);
+        mTextDate.setOnTouchListener(this);
+        mTextMonth.setOnTouchListener(this);
+        mTextYear.setOnTouchListener(this);
         int date = mCalendar.get(Calendar.DATE);
         int month = mCalendar.get(Calendar.MONTH);
         int year = mCalendar.get(Calendar.YEAR);
@@ -117,4 +121,19 @@ public class BucketPickerView extends LinearLayout {
         return mCalendar.getTimeInMillis();
     }
 
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+
+        switch(event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                break;
+        }
+        return true;
+    }
 }
