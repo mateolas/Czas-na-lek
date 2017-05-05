@@ -14,7 +14,5 @@
             <solid android:color="@android:color/transparent" />
             <corners android:radius="@dimen/btn_corner_radius_light_blue" />
         </shape>
-
-
     </item>
 </selector>

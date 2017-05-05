@@ -3,8 +3,8 @@
     <string name="button_dodaj_lek">Dodaj lek</string>
     <string name="dodaj_lek">Dodaj lek</string>
     <string name="ev_podaj_nazw_leku">Podaj nazwę leku</string>
-    <string name="tv_co_il_godzin_nalezy_przyjmowa_lek">Co ilę godzin należy przyjmować lek ?</string>
-    <string name="btn_dodaj">Dodaj</string>
+    <string name="tv_co_il_godzin_nalezy_przyjmowa_lek">Co ile godzin należy przyjmować lek ?</string>
+    <string name="btn_dodaj">Dodaj lek</string>
     <string name="rozpocznij_odliczanie">Rozpocznij odliczanie</string>
     <string name="end_curation">Zakończ kurację</string>
     <string name="lek_zosta_za_yty">Lek został zażyty</string>

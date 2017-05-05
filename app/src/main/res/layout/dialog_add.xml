@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorToolbarDarkBlue">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorToolbarDarkBlue">
+        android:padding="24dp">
 
         <TextView
             android:id="@+id/tv_title"
@@ -46,6 +47,16 @@
             android:text="@string/tv_co_il_godzin_nalezy_przyjmowa_lek"
             android:textSize="@dimen/tv_title_font_size" />
 
+        <TextView
+            android:id="@+id/tv_medicine_start_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_co_ile_godzin_przyjmowac_lek"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="40dp"
+            android:text="Data rozpoczęcia kuracji"
+            android:textSize="@dimen/tv_title_font_size" />
+
         <SeekBar
             android:id="@+id/sb_hours_interval"
             android:layout_width="match_parent"
@@ -59,17 +70,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="160dp"
+            android:layout_marginTop="80dp"
             android:layout_below="@+id/sb_hours_interval"></com.studio.skyline.wezlek.widgets.BucketPickerView>
 
         <Button
             android:id="@+id/btn_dodaj_lek"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/btn_emptyNoMedicine_width"
+            android:layout_height="@dimen/btn_emptyNoMedicine_height"
             android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
+            android:background="@drawable/bg_btn_add_it"
             android:layout_marginLeft="12dp"
             android:layout_marginStart="12dp"
+            android:textSize="@dimen/btn_textSize"
+            android:fontFamily="sans-serif-light"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp"
             android:text="@string/btn_dodaj"
             android:textAllCaps="false" />
 
