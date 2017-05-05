@@ -3,6 +3,8 @@ package com.studio.skyline.wezlek.widgets;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -30,6 +32,28 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
     private TextView mTextMonth;
     private TextView mTextYear;
     private SimpleDateFormat mFormatter;
+    private boolean mIncrement;
+    private boolean mDecrement;
+    public static final int DELAY = 500;
+
+    private Handler mHandler = new Handler(new Handler.Callback() {
+        @Override
+        public boolean handleMessage(Message msg) {
+            //Toast.makeText(getContext() ,"message received",Toast.LENGTH_SHORT).show();
+            if(mIncrement){
+                increment(mActiveId);
+            }
+            if(mDecrement){
+                decrement(mActiveId);
+            }
+            if(mIncrement || mDecrement){
+                mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT,DELAY);
+            }
+            return true;
+        }
+    });
+    private int MESSAGE_WHAT = 123;
+    private int mActiveId;
 
     public BucketPickerView(Context context) {
         super(context);
@@ -152,33 +176,49 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
             Rect bottomBounds = drawables[BOTTOM].getBounds();
             float x = event.getX();
             float y = event.getY();
+            mActiveId = textView.getId();
             if (topDrawableHit(textView, topBounds.height(), x, y)) {
                 if (isActionDown(event)) {
+                    mIncrement = true;
                     increment((textView.getId()));
+                    mHandler.removeMessages(MESSAGE_WHAT);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT,DELAY);
+                } if(isActionUpOrCancel(event)){
+                    mIncrement = false;
                 }
             } else if (bottomDrawableHit(textView, bottomBounds.height(), x, y)) {
                 if (isActionDown(event)) {
-                    decrement((textView.getId()));
+                    mDecrement = true;
+                    decrement(textView.getId());
+                    mHandler.removeMessages(MESSAGE_WHAT);
+                    mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT,DELAY);
                 }
+                if (isActionUpOrCancel(event)) {
+                    mDecrement = false;
+                }
+
             } else {
+                mIncrement = false;
+                mDecrement = false;
 
             }
         }
     }
 
+
     private void increment(int id) {
         switch (id) {
             case R.id.tv_date:
-                mCalendar.add(Calendar.DATE,1);
+                mCalendar.add(Calendar.DATE, 1);
                 break;
             case R.id.tv_month:
-                mCalendar.add(Calendar.MONTH,1);
+                mCalendar.add(Calendar.MONTH, 1);
                 break;
             case R.id.tv_year:
-                mCalendar.add(Calendar.YEAR,1);
+                mCalendar.add(Calendar.YEAR, 1);
                 break;
         }
-            set(mCalendar);
+        set(mCalendar);
     }
 
     private void set(Calendar calendar) {
@@ -192,13 +232,13 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
     private void decrement(int id) {
         switch (id) {
             case R.id.tv_date:
-                mCalendar.add(Calendar.DATE,-1);
+                mCalendar.add(Calendar.DATE, -1);
                 break;
             case R.id.tv_month:
-                mCalendar.add(Calendar.MONTH,-1);
+                mCalendar.add(Calendar.MONTH, -1);
                 break;
             case R.id.tv_year:
-                mCalendar.add(Calendar.YEAR,-1);
+                mCalendar.add(Calendar.YEAR, -1);
                 break;
         }
         set(mCalendar);
@@ -206,6 +246,11 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
 
     private boolean isActionDown(MotionEvent event) {
         return event.getAction() == MotionEvent.ACTION_DOWN;
+    }
+
+    private boolean isActionUpOrCancel(MotionEvent event) {
+        return event.getAction() == MotionEvent.ACTION_UP
+                || event.getAction() == MotionEvent.ACTION_CANCEL;
     }
 
     private boolean topDrawableHit(TextView textView, int drawableHeight, float x, float y) {
