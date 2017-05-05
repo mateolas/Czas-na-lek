@@ -1,29 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/iv_approve"
-        android:layout_width="@dimen/logo_width"
-        android:layout_height="@dimen/logo_height"
-        android:layout_marginTop="@dimen/logo_marginTop"
-        android:layout_marginBottom="@dimen/logo_marginBotton"
-        android:src="@drawable/logo"
-        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+
+        android:layout_width="match_parent" android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_approve"
+            android:layout_width="@dimen/logo_width"
+            android:layout_height="@dimen/logo_height"
+            android:layout_marginTop="@dimen/logo_marginTop"
+            android:layout_marginBottom="@dimen/logo_marginBotton"
+            android:src="@drawable/logo"
+            android:layout_centerHorizontal="true"/>
 
 
-    <Button
-        android:id="@+id/btn_dodaj_lek"
-        android:background="@drawable/bg_btn_add_it"
-        android:layout_below="@+id/iv_approve"
-        android:layout_width="@dimen/btn_emptyNoMedicine_width"
-        android:layout_height="@dimen/btn_emptyNoMedicine_height"
-        android:textAllCaps="false"
-        android:textSize="@dimen/btn_textSize"
-        android:textColor="@color/btn_add_color"
-        android:text="@string/button_dodaj_lek"
-        android:fontFamily="sans-serif-light"
-        android:layout_centerHorizontal="true"/>
+        <Button
+            android:id="@+id/btn_dodaj_lek"
+            android:background="@drawable/bg_btn_add_it"
+            android:layout_below="@+id/iv_approve"
+            android:layout_width="@dimen/btn_emptyNoMedicine_width"
+            android:layout_height="@dimen/btn_emptyNoMedicine_height"
+            android:textAllCaps="false"
+            android:textSize="@dimen/btn_textSize"
+            android:textColor="@color/btn_add_color"
+            android:text="@string/button_dodaj_lek"
+            android:fontFamily="sans-serif-light"
+            android:layout_centerHorizontal="true"/>
 
-</RelativeLayout>
+    </RelativeLayout>
+
+
+
+</ScrollView>
+
