@@ -67,7 +67,6 @@ public class BucketRecyclerView extends RecyclerView {
                 Util.showViews(mEmptyViews);
                 //hide the RecyclerView
                 setVisibility(View.GONE);
-
                 //hide all the views which are meant to be hidden
                 Util.hideViews(mNonEmptyViews);
             } else {

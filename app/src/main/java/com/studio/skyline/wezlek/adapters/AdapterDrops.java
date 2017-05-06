@@ -107,8 +107,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
-
     //changig row drop (a bar with medicine name) from xml to view
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -139,6 +137,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             //seting MtextView to proper drop.getWhat text
             dropHolder.setWhat(drop.getWhat());
             dropHolder.setWhen(drop.getWhen());
+            dropHolder.setTimer(drop.getTimer());
             dropHolder.setBackground(drop.isCompleted());
         }
 
@@ -197,6 +196,7 @@ public static class DropHolder extends RecyclerView.ViewHolder implements View.O
     MarkListener mMarkListener;
     Context mContext;
     View mItemView;
+    TextView mTextTimer;
 
     //"one row" of RecyclerView
     //adding MarkListener to constructor
@@ -207,6 +207,7 @@ public static class DropHolder extends RecyclerView.ViewHolder implements View.O
         itemView.setOnClickListener(this);
         mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
         mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
+        mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
         mMarkListener = listener;
     }
 
@@ -214,6 +215,9 @@ public static class DropHolder extends RecyclerView.ViewHolder implements View.O
         mTextWhat.setText(what);
     }
 
+    public void setTimer(String timer){
+        mTextTimer.setText(timer);
+    }
 
     @Override
     public void onClick(View v) {
@@ -244,6 +248,7 @@ public static class DropHolder extends RecyclerView.ViewHolder implements View.O
 
     }
 }
+
 
 public static class NoItemsHolder extends RecyclerView.ViewHolder {
 

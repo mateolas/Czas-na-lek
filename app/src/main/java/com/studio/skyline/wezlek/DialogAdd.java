@@ -67,11 +67,12 @@ public class DialogAdd extends DialogFragment {
 
     private void addAction() {
         String what = mInputWhat.getText().toString();
+        String timer = mHoursLeft.getText().toString();
         long now = System.currentTimeMillis();
-        Realm.init(getActivity());
+                Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
-        Drop drop = new Drop(what, now, mInputWhen.getTime() , false);
+        Drop drop = new Drop(what, now, mInputWhen.getTime() ,timer, false);
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);
@@ -96,6 +97,7 @@ public class DialogAdd extends DialogFragment {
         mBtnAdd.setOnClickListener(mBtnClickListener);
         mTimeLeft.setOnSeekBarChangeListener(mBarListener);
         mTimeLeft.setMax(MAX_INTERVAL);
+        //initializing seekBar with 0
         mHoursLeft.setText(mTimeLeft.getProgress() + " h");
 
     }
