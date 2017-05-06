@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.widgets.BucketPickerView;
@@ -27,6 +28,8 @@ public class DialogAdd extends DialogFragment {
     private BucketPickerView mInputWhen;
     private SeekBar mTimeLeft;
     private Button mBtnAdd;
+    private TextView mHoursLeft;
+    private static final int MAX_INTERVAL = 48;
 
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
         @Override
@@ -42,8 +45,11 @@ public class DialogAdd extends DialogFragment {
     };
 
     private SeekBar.OnSeekBarChangeListener mBarListener = new SeekBar.OnSeekBarChangeListener() {
+        int progress = 0;
+
         @Override
-        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+            progress = progressValue;
             //Toast.makeText(getActivity(),"TEST",Toast.LENGTH_SHORT).show();
         }
 
@@ -54,6 +60,7 @@ public class DialogAdd extends DialogFragment {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+            mHoursLeft.setText(progress + " h");
             //Toast.makeText(getActivity(),"STOP",Toast.LENGTH_SHORT).show();
         }
     };
@@ -76,9 +83,29 @@ public class DialogAdd extends DialogFragment {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //we need to use view, because we're working on fragment not an activity
+        mBtnClose = (ImageButton) view.findViewById(R.id.btn_close);
+        mInputWhat = (EditText) view.findViewById(R.id.et_nazwa_leku);
+        mInputWhen = (BucketPickerView) view.findViewById(R.id.bpv_date);
+        mTimeLeft = (SeekBar) view.findViewById(R.id.sb_hours_interval);
+        mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
+        mHoursLeft = (TextView) view.findViewById(R.id.tv_hours_left);
+        mBtnClose.setOnClickListener(mBtnClickListener);
+        mBtnAdd.setOnClickListener(mBtnClickListener);
+        mTimeLeft.setOnSeekBarChangeListener(mBarListener);
+        mTimeLeft.setMax(MAX_INTERVAL);
+        mHoursLeft.setText(mTimeLeft.getProgress() + " h");
+
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogTheme);
+
+
     }
 
     @Nullable
@@ -88,17 +115,5 @@ public class DialogAdd extends DialogFragment {
         return inflater.inflate(R.layout.dialog_add, container, false);
     }
 
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //we need to use view, because we're working on fragment not an activity
-        mBtnClose = (ImageButton) view.findViewById(R.id.btn_close);
-        mInputWhat = (EditText) view.findViewById(R.id.et_nazwa_leku);
-        mInputWhen = (BucketPickerView) view.findViewById(R.id.bpv_date);
-        mTimeLeft = (SeekBar) view.findViewById(R.id.sb_hours_interval);
-        mBtnAdd = (Button) view.findViewById(R.id.btn_dodaj_lek);
-        mBtnClose.setOnClickListener(mBtnClickListener);
-        mBtnAdd.setOnClickListener(mBtnClickListener);
-        //mTimeLeft.setOnSeekBarChangeListener(mBarListener);
-    }
+
 }

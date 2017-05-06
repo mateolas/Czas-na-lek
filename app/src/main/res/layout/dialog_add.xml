@@ -48,20 +48,30 @@
             android:textSize="@dimen/tv_title_font_size" />
 
         <TextView
+            android:id="@+id/tv_hours_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_co_ile_godzin_przyjmowac_lek"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:textSize="@dimen/tv_title_font_size" />
+
+        <TextView
             android:id="@+id/tv_medicine_start_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_co_ile_godzin_przyjmowac_lek"
+            android:layout_below="@id/tv_hours_left"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="40dp"
-            android:text="Data rozpoczęcia kuracji"
+            android:text="@string/data_rozpocz_cia_kuracji"
             android:textSize="@dimen/tv_title_font_size" />
 
         <SeekBar
             android:id="@+id/sb_hours_interval"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_co_ile_godzin_przyjmowac_lek"
+            android:layout_below="@+id/tv_hours_left"
             android:layout_marginTop="0dp" />
 
 
@@ -71,7 +81,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="160dp"
             android:layout_marginTop="80dp"
-            android:layout_below="@+id/sb_hours_interval"></com.studio.skyline.wezlek.widgets.BucketPickerView>
+            android:layout_below="@+id/sb_hours_interval">
+
+        </com.studio.skyline.wezlek.widgets.BucketPickerView>
 
         <Button
             android:id="@+id/btn_dodaj_lek"
