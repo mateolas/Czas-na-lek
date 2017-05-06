@@ -9,4 +9,7 @@
     <string name="end_curation">Zakończ kurację</string>
     <string name="lek_zosta_za_yty">Lek został zażyty</string>
     <string name="str_no_items">Brak leków do wyświetlenia</string>
+    <string name="notif_message">Czas na zażycie leku</string>
+    <string name="notif_title">Czas na lek</string>
+    <string name="notif_long_message">Nie zapomnij o zażyciu kolejnej dawki leku. Już czas.</string>
 </resources>
