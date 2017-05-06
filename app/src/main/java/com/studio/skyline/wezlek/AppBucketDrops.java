@@ -21,8 +21,6 @@ public class AppBucketDrops extends Application {
     public void onCreate() {
         super.onCreate();
         Realm.init(this);
-
-
     }
 
     //method to save info in the Shared Preferences file

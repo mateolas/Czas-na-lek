@@ -28,7 +28,6 @@ public class DialogAdd extends DialogFragment {
     private SeekBar mTimeLeft;
     private Button mBtnAdd;
 
-
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
