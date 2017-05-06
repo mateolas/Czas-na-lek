@@ -2,6 +2,7 @@ package com.studio.skyline.wezlek.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -37,6 +38,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private final ResetListener mResetListener;
     private MarkListener mMarkListener;
 
+
     //inflater object which converts xml file to view object
     private LayoutInflater mInflater;
 
@@ -49,7 +51,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context mContext;
 
     //adding MarkListener to constructur
-    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener,ResetListener resetListener) {
+    public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener, ResetListener resetListener) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
         update(results);
@@ -79,7 +81,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public long getItemId(int position) {
-        if(position<mResults.size()){
+        if (position < mResults.size()) {
             return mResults.get(position).getAdded();
         }
         return RecyclerView.NO_ID;
@@ -173,7 +175,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     private void resetFilterIfEmpty() {
-        if(mResults.isEmpty() && (mFilterOption == Filter.COMPLETE || mFilterOption == Filter.INCOMPLETE )){
+        if (mResults.isEmpty() && (mFilterOption == Filter.COMPLETE || mFilterOption == Filter.INCOMPLETE)) {
             mResetListener.onReset();
         }
     }
@@ -188,95 +190,114 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class DropHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-    //initialising mTextView which is type DropHolder
-    TextView mTextWhat;
-    TextView mTextWhen;
-    MarkListener mMarkListener;
-    Context mContext;
-    View mItemView;
-    TextView mTextTimer;
+        //initialising mTextView which is type DropHolder
+        TextView mTextWhat;
+        TextView mTextWhen;
+        MarkListener mMarkListener;
+        Context mContext;
+        View mItemView;
+        TextView mTextTimer;
+        //timer
+        Handler handler;
+        long timeRemaining = 5000;
 
-    //"one row" of RecyclerView
-    //adding MarkListener to constructor
-    public DropHolder(View itemView, MarkListener listener) {
-        super(itemView);
-        mItemView = itemView;
-        mContext = itemView.getContext();
-        itemView.setOnClickListener(this);
-        mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
-        mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
-        mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
-        mMarkListener = listener;
-    }
 
-    public void setWhat(String what) {
-        mTextWhat.setText(what);
-    }
+        //"one row" of RecyclerView
+        //adding MarkListener to constructor
+        public DropHolder(View itemView, MarkListener listener) {
+            super(itemView);
+            mItemView = itemView;
+            mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
+            mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
+            mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
+            mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
+            mMarkListener = listener;
+            //timer
 
-    public void setTimer(String timer){
-        mTextTimer.setText(timer);
-    }
-
-    @Override
-    public void onClick(View v) {
-        // we can't use just show method, we need to use FragmentManager
-        //to use FragmentManager from MainActivity we need to implement an interface
-        //interface name - MarkListener
-        mMarkListener.onMark(getAdapterPosition());
-    }
-
-    public void setBackground(boolean completed) {
-        Drawable drawable;
-        if (completed) {
-            drawable = ContextCompat.getDrawable(mContext, R.color.colorLightBlueAfterClick);
-        } else {
-            drawable = ContextCompat.getDrawable(mContext, R.drawable.bg_row_drop);
+            handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    timeRemaining = timeRemaining - 1000;
+                    if (timeRemaining > 0) {
+                        handler.postDelayed(this, 1000);
+                        mTextTimer.setText(Integer.toString((int) timeRemaining));
+                    }
+                }
+            };
+            //kickstart
+            handler.postDelayed(runnable, 1000);
         }
+
+        public void setWhat(String what) {
+            mTextWhat.setText(what);
+        }
+
+        public void setTimer(String timer) {
+            mTextTimer.setText(timer);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // we can't use just show method, we need to use FragmentManager
+            //to use FragmentManager from MainActivity we need to implement an interface
+            //interface name - MarkListener
+            mMarkListener.onMark(getAdapterPosition());
+        }
+
+        public void setBackground(boolean completed) {
+            Drawable drawable;
+            if (completed) {
+                drawable = ContextCompat.getDrawable(mContext, R.color.colorLightBlueAfterClick);
+            } else {
+                drawable = ContextCompat.getDrawable(mContext, R.drawable.bg_row_drop);
+            }
             /*if(Build.VERSION.SDK_INT > 15){
                 mItemView.setBackground(drawable);
             } else{
                 mItemView.setBackgroundDrawable(drawable);
             }*/
-        Util.setBackground(mItemView, drawable);
-
-    }
-
-    public void setWhen(long when) {
-        mTextWhen.setText(DateUtils.getRelativeTimeSpanString(when, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS, 0));
-
-    }
-}
-
-
-public static class NoItemsHolder extends RecyclerView.ViewHolder {
-
-    public NoItemsHolder(View itemView) {
-        super(itemView);
-    }
-}
-
-
-//creating a FooterHolder
-public class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-    //initialising mTextView which is type DropHolder
-    Button mBtnAdd;
-
-    public FooterHolder(View itemView) {
-        super(itemView);
-        mBtnAdd = (Button) itemView.findViewById(R.id.btn_footer);
-        mBtnAdd.setOnClickListener(this);
-
-    }
-
-    @Override
-    public void onClick(View v) {
-        //were using from this place AddListener
-        mAddListener.add();
-    }
-}
-
+            Util.setBackground(mItemView, drawable);
 
         }
+
+        public void setWhen(long when) {
+            mTextWhen.setText(DateUtils.getRelativeTimeSpanString(when, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS, 0));
+
+        }
+    }
+
+
+    public static class NoItemsHolder extends RecyclerView.ViewHolder {
+
+        public NoItemsHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+
+    //creating a FooterHolder
+    public class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        //initialising mTextView which is type DropHolder
+        Button mBtnAdd;
+
+        public FooterHolder(View itemView) {
+            super(itemView);
+            mBtnAdd = (Button) itemView.findViewById(R.id.btn_footer);
+            mBtnAdd.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View v) {
+            //were using from this place AddListener
+            mAddListener.add();
+        }
+    }
+
+
+}

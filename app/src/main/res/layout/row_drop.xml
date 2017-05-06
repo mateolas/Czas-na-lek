@@ -21,6 +21,8 @@
         android:paddingRight="22dp"
         android:text="Test" />
 
+
+
     <TextView
         android:id="@+id/tv_timer"
         android:layout_width="wrap_content"

@@ -62,7 +62,6 @@ public class BucketRecyclerView extends RecyclerView {
     private void toggleViews() {
         if (getAdapter() != null && !mEmptyViews.isEmpty() && !mNonEmptyViews.isEmpty()) {
             if (getAdapter().getItemCount() == 0) {
-
                 //show all the empty views
                 Util.showViews(mEmptyViews);
                 //hide the RecyclerView

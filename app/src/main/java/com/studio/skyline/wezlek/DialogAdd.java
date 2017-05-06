@@ -28,7 +28,7 @@ public class DialogAdd extends DialogFragment {
     private BucketPickerView mInputWhen;
     private SeekBar mTimeLeft;
     private Button mBtnAdd;
-    private TextView mHoursLeft;
+    public  TextView mHoursLeft;
     private static final int MAX_INTERVAL = 48;
 
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class DialogAdd extends DialogFragment {
         String what = mInputWhat.getText().toString();
         String timer = mHoursLeft.getText().toString();
         long now = System.currentTimeMillis();
-                Realm.init(getActivity());
+        Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
         Drop drop = new Drop(what, now, mInputWhen.getTime() ,timer, false);
@@ -78,6 +78,10 @@ public class DialogAdd extends DialogFragment {
         realm.copyToRealm(drop);
         realm.commitTransaction();
         realm.close();
+    }
+
+    public String getTimer(){
+        return mHoursLeft.getText().toString();
     }
 
     public DialogAdd() {
