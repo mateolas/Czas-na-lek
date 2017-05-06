@@ -1,5 +1,8 @@
 package com.studio.skyline.wezlek;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -22,6 +25,7 @@ import com.studio.skyline.wezlek.adapters.MarkListener;
 import com.studio.skyline.wezlek.adapters.ResetListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
 import com.studio.skyline.wezlek.beans.Drop;
+import com.studio.skyline.wezlek.services.NotificationService;
 import com.studio.skyline.wezlek.widgets.BucketRecyclerView;
 import com.studio.skyline.wezlek.widgets.DialogMark;
 
@@ -152,7 +156,14 @@ public class ActivityMain extends AppCompatActivity {
         helper.attachToRecyclerView(mRecycler);
         //initializing background with Glide
         initBackgroundImage();
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, NotificationService.class);
+        //puting an intent into Pending intent enables to receive intent after destroying an app
+        PendingIntent pendingIntent = PendingIntent.getService(this,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,1000,5000,pendingIntent);
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
