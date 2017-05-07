@@ -215,12 +215,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
             mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
             mMarkListener = listener;
-            handler = new Handler();
+
 
             //timer
              /*
-
-
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
@@ -241,17 +239,21 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setTimer(String timer) {
+            handler = new Handler();
             timeRemaining = Long.valueOf(timer)*1000;
-
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     timeRemaining = timeRemaining - 1000;
                     if (timeRemaining > 0) {
                         handler.postDelayed(this, 1000);
+                        timeRemaining = timeRemaining/1000;
                         mTextTimer.setText(Long.toString(timeRemaining));
-                        //tvClock.setText(new SimpleDateFormat("HH:mm", Locale.US).format(new Date()));
-                        //someHandler.postDelayed(this, 1000);
+                        timeRemaining = timeRemaining*1000;
+                    } if(timeRemaining == 0){
+
+                        mTextTimer.setText("Czas na lek !");
+
                     }
                 }
             };

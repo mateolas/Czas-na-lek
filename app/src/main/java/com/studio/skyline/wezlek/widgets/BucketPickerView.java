@@ -126,8 +126,6 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
     }
 
     private void update(int date, int month, int year, int hour, int minute, int second) {
-        String result = mFormatter.format(mCalendar.getTime());
-
         mCalendar.set(Calendar.DATE, date);
         mCalendar.set(Calendar.MONTH, month);
         mCalendar.set(Calendar.YEAR, year);
@@ -136,47 +134,7 @@ public class BucketPickerView extends LinearLayout implements View.OnTouchListen
         mCalendar.set(Calendar.SECOND, second);
         mTextYear.setText(year + "");
         mTextDate.setText(date + "");
-        switch (result) {
-
-            case "January":
-                result = "Sty";
-                break;
-            case "February":
-                result = "Lut";
-                break;
-            case "March":
-                result = "Mar";
-                break;
-            case "April":
-                result = "Kwi";
-                break;
-            case "May":
-                result = "Maj";
-                break;
-            case "June":
-                result = "Cze";
-                break;
-            case "July":
-                result = "Lip";
-                break;
-            case "August":
-                result = "Sie";
-                break;
-            case "September":
-                result = "Wrz";
-                break;
-            case "October":
-                result = "Paź";
-                break;
-            case "November":
-                result = "List";
-                break;
-            case "December":
-                result = "Gru";
-                break;
-        }
-
-        mTextMonth.setText(result);
+        mTextMonth.setText(mFormatter.format(mCalendar.getTime()));
 
     }
 

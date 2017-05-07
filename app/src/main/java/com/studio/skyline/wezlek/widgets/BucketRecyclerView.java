@@ -96,7 +96,6 @@ public class BucketRecyclerView extends RecyclerView {
     @Override
     public void setAdapter(Adapter adapter) {
         super.setAdapter(adapter);
-
         if (adapter != null) {
             try {
                 adapter.registerAdapterDataObserver(mObserver);
