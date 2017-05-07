@@ -13,19 +13,18 @@ public class Drop extends RealmObject {
     @PrimaryKey
     private long added;
     private long when;
-    private String timer;
+    private long timer;
     private boolean completed;
 
     public Drop(){
 
     }
 
-    public Drop(String what, long added, long when, String timer, boolean completed) {
+    public Drop(String what, long added, long when, long timer, boolean completed) {
 
         this.what = what;
         this.added = added;
         this.when = when;
-
         this.completed = completed;
         this.timer = timer;
     }
@@ -62,11 +61,11 @@ public class Drop extends RealmObject {
         this.completed = completed;
     }
 
-    public String getTimer() {
+    public long getTimer() {
         return timer;
     }
 
-    public void setTimer(String timer) {
+    public void setTimer(long timer) {
         this.timer = timer;
     }
 }

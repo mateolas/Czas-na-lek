@@ -17,8 +17,6 @@ import com.studio.skyline.wezlek.R;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.extras.Util;
 
-import java.util.ArrayList;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
 
@@ -37,20 +35,17 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public static final int FOOTER = 2;
     private final ResetListener mResetListener;
     private MarkListener mMarkListener;
-
-
     //inflater object which converts xml file to view object
     private LayoutInflater mInflater;
-
-    //ArrayList to contain 100 numbers - not used anymore
-    private RealmResults<Drop> mResults;
-
+    public RealmResults<Drop> mResults;
     private AddListener mAddListener;
     private int mFilterOption;
     private Realm mRealm;
     private Context mContext;
+    Handler handler;
+    public long duration;
 
-    //adding MarkListener to constructur
+    //AdapterDrops constructor
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener, ResetListener resetListener) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
@@ -62,19 +57,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     }
 
-    //method which generates and return ArrayList with 100 values
-    public static ArrayList<String> generateValues() {
-        ArrayList<String> dummyValues = new ArrayList<>();
-        for (int i = 1; i < 101; i++) {
-            dummyValues.add("Item" + i);
-        }
-        return dummyValues;
-
-    }
-
     public void update(RealmResults<Drop> results) {
         mResults = results;
         mFilterOption = AppBucketDrops.load(mContext);
+        //notification do Apdapter that database was changed
         notifyDataSetChanged();
 
     }
@@ -109,7 +95,9 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    //onCreateViewHolder only creates about 10 views and then it just reuses them
     //changig row drop (a bar with medicine name) from xml to view
+    //link a layout file of a single item with the adapter to tell it how to display each item
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == FOOTER) {
@@ -120,16 +108,32 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             View view = mInflater.inflate(R.layout.no_item, parent, false);
             return new NoItemsHolder(view);
         } else {
-
             //layourInflater converts xml file to java View object
             View view = mInflater.inflate(R.layout.row_drop, parent, false);
             return new DropHolder(view, mMarkListener);
-
         }
     }
 
+   /* public String realmTimerUpdate(Drop drop, String timer){
+        duration = Long.parseLong(timer);
+        drop.setTimer(timer);
+        final Runnable runnable2 = new Runnable() {
+            @Override
+            public void run() {
+                if (duration > 0) {
+                    duration = duration - 1000;
+                }
+            }
+        };
+        //kickstart
+        handler.postDelayed(runnable2, 1000);
+        return String.valueOf(duration);
+    }*/
+
     //bind holder to tv_what TextView
     //this method is called every time we need to show particular item
+    //display the data of each position
+    //onBindViewHolder puts data into onCreateViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DropHolder) {
@@ -202,6 +206,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         //timer
         Handler handler;
         public long timeRemaining;
+        public Drop drop;
 
 
         //"one row" of RecyclerView
@@ -216,59 +221,38 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
             mMarkListener = listener;
 
-
-            //timer
-             /*
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    timeRemaining = timeRemaining - 1000;
-                    if (timeRemaining > 0) {
-                        handler.postDelayed(this, 1000);
-                        mTextTimer.setText(Long.toString(timeRemaining));
-                    }
-                }
-            };
-            //kickstart
-            handler.postDelayed(runnable, 1000);
-            */
         }
 
         public void setWhat(String what) {
             mTextWhat.setText(what);
         }
 
-        public void setTimer(String timer) {
+        public Drop getDrop(Drop drop) {
+            return drop;
+        }
+
+        public void setTimer(long timer) {
+
             handler = new Handler();
-            timeRemaining = Long.valueOf(timer)*1000;
+            timeRemaining = timer * 1000;
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     timeRemaining = timeRemaining - 1000;
+
                     if (timeRemaining > 0) {
                         handler.postDelayed(this, 1000);
-                        timeRemaining = timeRemaining/1000;
+                        timeRemaining = timeRemaining / 1000;
                         mTextTimer.setText(Long.toString(timeRemaining));
-                        timeRemaining = timeRemaining*1000;
-                    } if(timeRemaining == 0){
-
+                        timeRemaining = timeRemaining * 1000;
+                    }
+                    if (timeRemaining == 0) {
                         mTextTimer.setText("Czas na lek !");
-
                     }
                 }
             };
             //kickstart
             handler.postDelayed(runnable, 1000);
-
-
-
-
-            //mTextTimer.setText(String.valueOf(factor));
-            //mTextTimer.setText(String.valueOf(factor));
-            //timeRemaining = Long.parseLong(timer)*1000;
-            //mTextTimer.setText(Long.toString(timeRemaining));
-
-
         }
 
         @Override
@@ -301,7 +285,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
     public static class NoItemsHolder extends RecyclerView.ViewHolder {
 
         public NoItemsHolder(View itemView) {
@@ -309,10 +292,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-
     //creating a FooterHolder
     public class FooterHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         //initialising mTextView which is type DropHolder
         Button mBtnAdd;
 

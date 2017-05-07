@@ -67,7 +67,7 @@ public class DialogAdd extends DialogFragment {
 
     private void addAction() {
         String what = mInputWhat.getText().toString();
-        String timer = mHoursLeft.getText().toString();
+        long timer = Long.parseLong(mHoursLeft.getText().toString());
         long now = System.currentTimeMillis();
         Realm.init(getActivity());
         //default configuration

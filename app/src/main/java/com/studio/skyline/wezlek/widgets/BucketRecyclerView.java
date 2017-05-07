@@ -16,6 +16,7 @@ import java.util.List;
  * Created by aneimat on 13.04.2017.
  */
 
+//Added AdapterDataObserver to switch between view (where are items and there aren't items)
 public class BucketRecyclerView extends RecyclerView {
 
     //to be displayed when adapter will be nonEmpty
@@ -23,9 +24,7 @@ public class BucketRecyclerView extends RecyclerView {
     //to be displayed when adapter is empty
     private List<View> mEmptyViews = Collections.emptyList();
 
-
     private AdapterDataObserver mObserver = new AdapterDataObserver() {
-
         //super was removed because it was empty
         @Override
         public void onChanged() {

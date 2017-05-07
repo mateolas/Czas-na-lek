@@ -34,7 +34,7 @@ public class NotificationService extends IntentService {
             RealmResults<Drop> results = realm.where(Drop.class).equalTo("completed", false).findAll();
 
             for (Drop current : results) {
-                if (isNotificationNeeded(current.getAdded(), current.getWhen())) {
+                if (isNotificationNeeded(current.getTimer())) {
                     fireNotification(current);
                }
 
@@ -63,14 +63,14 @@ public class NotificationService extends IntentService {
     }
 
 
-    private boolean isNotificationNeeded(long added, long when) {
-        long now = System.currentTimeMillis();
-        if(now>when){
+    private boolean isNotificationNeeded(long timer) {
+
+        if (timer==8) {
+            return true;
+        } else{
             return false;
-        } else {
-            long difference90 = (long) (0.9 * (when - added));
-            return (now>(added + difference90)) ? true:false;
         }
+
     }
 
 }

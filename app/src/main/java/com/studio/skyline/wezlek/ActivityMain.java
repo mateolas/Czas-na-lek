@@ -72,7 +72,6 @@ public class ActivityMain extends AppCompatActivity {
 
     //we can implement MarkListener to the class
     //or we can use variable which stores anonymous implementation
-
     private MarkListener mMarkListener = new MarkListener() {
         @Override
         public void onMark(int position) {
@@ -145,6 +144,8 @@ public class ActivityMain extends AppCompatActivity {
         mAdapter = new AdapterDrops(this, mRealm, mResults, mAddListener, mMarkListener, mResetListener);
         mAdapter.setHasStableIds(true);
         //setting an adapter to Recycler
+        //Recycler and Adapter are indepentent. We need to link one to each other.
+        //Adapter is responsible for showing particular items.
         mRecycler.setAdapter(mAdapter);
         //query in Realm. Query is stored in special arraylist RealResult type
         //objects which are responsible for swiping and removing items in Recycle View
