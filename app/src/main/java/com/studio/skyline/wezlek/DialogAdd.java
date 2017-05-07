@@ -60,7 +60,7 @@ public class DialogAdd extends DialogFragment {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-            mHoursLeft.setText(progress + " h");
+            mHoursLeft.setText(progress + "");
             //Toast.makeText(getActivity(),"STOP",Toast.LENGTH_SHORT).show();
         }
     };

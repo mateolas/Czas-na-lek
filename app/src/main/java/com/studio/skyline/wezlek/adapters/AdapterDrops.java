@@ -134,7 +134,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DropHolder) {
             DropHolder dropHolder = (DropHolder) holder;
-            //changing to text
+            //returning an item from the paricular position
             Drop drop = mResults.get(position);
             //seting MtextView to proper drop.getWhat text
             dropHolder.setWhat(drop.getWhat());
@@ -201,7 +201,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView mTextTimer;
         //timer
         Handler handler;
-        long timeRemaining = 5000;
+        public long timeRemaining;
 
 
         //"one row" of RecyclerView
@@ -215,21 +215,25 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
             mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
             mMarkListener = listener;
-            //timer
-
             handler = new Handler();
+
+            //timer
+             /*
+
+
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
                     timeRemaining = timeRemaining - 1000;
                     if (timeRemaining > 0) {
                         handler.postDelayed(this, 1000);
-                        mTextTimer.setText(Integer.toString((int) timeRemaining));
+                        mTextTimer.setText(Long.toString(timeRemaining));
                     }
                 }
             };
             //kickstart
             handler.postDelayed(runnable, 1000);
+            */
         }
 
         public void setWhat(String what) {
@@ -237,7 +241,32 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setTimer(String timer) {
-            mTextTimer.setText(timer);
+            timeRemaining = Long.valueOf(timer)*1000;
+
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    timeRemaining = timeRemaining - 1000;
+                    if (timeRemaining > 0) {
+                        handler.postDelayed(this, 1000);
+                        mTextTimer.setText(Long.toString(timeRemaining));
+                        //tvClock.setText(new SimpleDateFormat("HH:mm", Locale.US).format(new Date()));
+                        //someHandler.postDelayed(this, 1000);
+                    }
+                }
+            };
+            //kickstart
+            handler.postDelayed(runnable, 1000);
+
+
+
+
+            //mTextTimer.setText(String.valueOf(factor));
+            //mTextTimer.setText(String.valueOf(factor));
+            //timeRemaining = Long.parseLong(timer)*1000;
+            //mTextTimer.setText(Long.toString(timeRemaining));
+
+
         }
 
         @Override
