@@ -25,7 +25,7 @@ import io.realm.RealmResults;
  */
 
 
-public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
+    public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
     //integer for footer
     public static final int COUNT_FOOTER = 1;
@@ -44,6 +44,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context mContext;
     Handler handler;
     public long duration;
+
 
     //AdapterDrops constructor
     public AdapterDrops(Context context, Realm realm, RealmResults<Drop> results, AddListener listener, MarkListener markListener, ResetListener resetListener) {
@@ -114,26 +115,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-   /* public String realmTimerUpdate(Drop drop, String timer){
-        duration = Long.parseLong(timer);
-        drop.setTimer(timer);
-        final Runnable runnable2 = new Runnable() {
-            @Override
-            public void run() {
-                if (duration > 0) {
-                    duration = duration - 1000;
-                }
-            }
-        };
-        //kickstart
-        handler.postDelayed(runnable2, 1000);
-        return String.valueOf(duration);
-    }*/
-
-    //bind holder to tv_what TextView
-    //this method is called every time we need to show particular item
-    //display the data of each position
-    //onBindViewHolder puts data into onCreateViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof DropHolder) {
@@ -202,12 +183,13 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         MarkListener mMarkListener;
         Context mContext;
         View mItemView;
-        TextView mTextTimer;
+        TextView mTimer;
         //timer
         Handler handler;
-        public long timeRemaining;
+        public long timerRealm;
+        public long actualTime;
+        public long timeLeft;
         public Drop drop;
-
 
         //"one row" of RecyclerView
         //adding MarkListener to constructor
@@ -218,10 +200,11 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             itemView.setOnClickListener(this);
             mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
             mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
-            mTextTimer = (TextView) itemView.findViewById(R.id.tv_timer);
+            mTimer = (TextView) itemView.findViewById(R.id.tv_timer);
             mMarkListener = listener;
 
         }
+
 
         public void setWhat(String what) {
             mTextWhat.setText(what);
@@ -234,7 +217,23 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public void setTimer(long timer) {
 
             handler = new Handler();
-            timeRemaining = timer * 1000;
+            timerRealm = timer;
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    timeLeft=timerRealm - System.currentTimeMillis();
+
+                    if(timeLeft > 0){
+                        handler.postDelayed(this,1000);
+                        mTimer.setText(Long.toString(timeLeft));
+
+                   }
+                    if(timeLeft == 0 || timeLeft < 0 ){
+                     mTimer.setText("Czas na lek !");
+                    }
+                }
+            }; handler.postDelayed(runnable,1000);
+            /*timeRemaining = timer * 1000;
             final Runnable runnable = new Runnable() {
                 @Override
                 public void run() {
@@ -243,16 +242,16 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     if (timeRemaining > 0) {
                         handler.postDelayed(this, 1000);
                         timeRemaining = timeRemaining / 1000;
-                        mTextTimer.setText(Long.toString(timeRemaining));
+                        mTimer.setText(Long.toString(timeRemaining));
                         timeRemaining = timeRemaining * 1000;
                     }
                     if (timeRemaining == 0) {
-                        mTextTimer.setText("Czas na lek !");
+                        mTimer.setText("Czas na lek !");
                     }
                 }
             };
             //kickstart
-            handler.postDelayed(runnable, 1000);
+            handler.postDelayed(runnable, 1000);*/
         }
 
         @Override

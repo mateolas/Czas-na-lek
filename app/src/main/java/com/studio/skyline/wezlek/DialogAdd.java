@@ -65,10 +65,12 @@ public class DialogAdd extends DialogFragment {
         }
     };
 
+    //adding data to database
     private void addAction() {
         String what = mInputWhat.getText().toString();
-        long timer = Long.parseLong(mHoursLeft.getText().toString());
+        long timeSet = Long.parseLong(mHoursLeft.getText().toString())*1000;
         long now = System.currentTimeMillis();
+        long timer = timeSet + now;
         Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
