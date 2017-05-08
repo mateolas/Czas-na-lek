@@ -15,18 +15,28 @@ public class Drop extends RealmObject {
     private long when;
     private long timer;
     private boolean completed;
+    private long timeSet;
 
     public Drop(){
 
     }
 
-    public Drop(String what, long added, long when, long timer, boolean completed) {
+    public long getTimeSet() {
+        return timeSet;
+    }
+
+    public void setTimeSet(long timeSet) {
+        this.timeSet = timeSet;
+    }
+
+    public Drop(String what, long added, long when, long timer, boolean completed, long timeSet) {
 
         this.what = what;
         this.added = added;
         this.when = when;
         this.completed = completed;
         this.timer = timer;
+        this.timeSet = timeSet;
     }
 
     public String getWhat() {

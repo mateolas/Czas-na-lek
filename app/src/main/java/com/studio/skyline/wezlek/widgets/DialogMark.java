@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.studio.skyline.wezlek.R;
 import com.studio.skyline.wezlek.adapters.CompleteListener;
+import com.studio.skyline.wezlek.adapters.ResetTimerListener;
 
 /**
  * Created by aneimat on 28.04.2017.
@@ -33,17 +34,29 @@ public class DialogMark extends DialogFragment {
                     break;
                 case R.id.btn_restart:
                     //TODO handle the action here to restart the timer
-
+                    restart();
+                    
                     break;
             }
             dismiss();
         }
     };
 
+    private ResetTimerListener mTimeListener;
+
+    private void restart() {
+        Bundle arguments = getArguments();
+        //we need to comunicate with adapter to mark item as completed
+        if (mTimeListener != null && arguments != null) {
+            //position - position of the clicked item
+            int position = arguments.getInt("POSITION");
+            mTimeListener.onResetTimer(position);
+        }
+    }
+
     private CompleteListener mListener;
 
     private void markAsComplete() {
-
         Bundle arguments = getArguments();
         //we need to comunicate with adapter to mark item as completed
         if (mListener != null && arguments != null) {
@@ -57,8 +70,6 @@ public class DialogMark extends DialogFragment {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL,R.style.DialogTheme);
     }
-
-
 
     @Nullable
     @Override
@@ -77,11 +88,14 @@ public class DialogMark extends DialogFragment {
         mBtnCompleted.setOnClickListener(mBtnClickListener);
         mBtnRestart.setOnClickListener(mBtnClickListener);
 
-
     }
 
     public void setCompleteListener(CompleteListener mCompleteListener) {
         mListener = mCompleteListener;
+    }
+
+    public void setResetTimeListener(ResetTimerListener mResetTimeListener) {
+        mTimeListener = mResetTimeListener;
     }
 }
 

@@ -20,6 +20,7 @@ import com.studio.skyline.wezlek.adapters.Divider;
 import com.studio.skyline.wezlek.adapters.Filter;
 import com.studio.skyline.wezlek.adapters.MarkListener;
 import com.studio.skyline.wezlek.adapters.ResetListener;
+import com.studio.skyline.wezlek.adapters.ResetTimerListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.extras.Util;
@@ -88,6 +89,16 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private ResetTimerListener onResetTimerListener = new ResetTimerListener() {
+        @Override
+        public void onResetTimer(int position) {
+            mAdapter.resetTimer(position,mResults.get(position).getTimeSet()+System.currentTimeMillis());
+            //Toast.makeText(ActivityMain.this, "getTimer value: " + mResults.get(position).getTimer(), Toast.LENGTH_SHORT).show();
+
+        }
+    };
+
+
     private ResetListener mResetListener = new ResetListener() {
         @Override
         public void onReset() {
@@ -108,6 +119,7 @@ public class ActivityMain extends AppCompatActivity {
         bundle.putInt("POSITION", position);
         dialog.setArguments(bundle);
         dialog.setCompleteListener(mCompleteListener);
+        dialog.setResetTimeListener(onResetTimerListener);
         dialog.show(getSupportFragmentManager(), "Mark");
     }
 

@@ -29,7 +29,7 @@ import io.realm.RealmResults;
  */
 
 
-    public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
+public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements SwipeListener {
 
     //integer for footer
     public static final int COUNT_FOOTER = 1;
@@ -169,6 +169,16 @@ import io.realm.RealmResults;
         }
     }
 
+
+    public void resetTimer(int position, long timer) {
+        if (position < mResults.size()) {
+            mRealm.beginTransaction();
+            mResults.get(position).setTimer(timer);
+            mRealm.commitTransaction();
+            notifyDataSetChanged();
+        }
+    }
+
     public void markComplete(int position) {
         //checking that item is not a footer
         if (position < mResults.size()) {
@@ -234,15 +244,16 @@ import io.realm.RealmResults;
                             TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
 
-                    if(timeLeft > 0){
-                        handler.postDelayed(this,1000);
+                    if (timeLeft > 0) {
+                        handler.postDelayed(this, 1000);
                         mTimer.setText(counter);
-                   }
-                    if(timeLeft == 0 || timeLeft < 0 ){
-                     mTimer.setText("Czas na lek !");
+                    }
+                    if (timeLeft == 0 || timeLeft < 0) {
+                        mTimer.setText("Czas na lek !");
                     }
                 }
-            }; handler.postDelayed(runnable,1000);
+            };
+            handler.postDelayed(runnable, 1000);
         }
 
         @Override
