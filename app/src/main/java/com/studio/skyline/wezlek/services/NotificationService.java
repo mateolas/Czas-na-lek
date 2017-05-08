@@ -32,9 +32,8 @@ public class NotificationService extends IntentService {
             realm = Realm.getDefaultInstance();
             //query incomplete drops
             RealmResults<Drop> results = realm.where(Drop.class).equalTo("completed", false).findAll();
-
             for (Drop current : results) {
-                if (isNotificationNeeded(current.getTimer())) {
+                if (isNotificationNeeded(current.getTimer(), System.currentTimeMillis())) {
                     fireNotification(current);
                }
 
@@ -47,7 +46,7 @@ public class NotificationService extends IntentService {
     }
 
     private void fireNotification(Drop drop) {
-        String message = getString(R.string.notif_message)+ "\"" + drop.getWhat() + "\"";
+        String message = getString(R.string.notif_message)+ " \"" + drop.getWhat() + "\"";
         PugNotification.with(this)
                 .load()
                 .title(R.string.notif_title)
@@ -63,11 +62,13 @@ public class NotificationService extends IntentService {
     }
 
 
-    private boolean isNotificationNeeded(long timer) {
+    private boolean isNotificationNeeded(long timer, long now) {
 
-        if (timer==8) {
+        long difference = timer - now;
+        if (difference == 0 || difference < 0) {
             return true;
-        } else{
+        }
+        else {
             return false;
         }
 

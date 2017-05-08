@@ -196,7 +196,6 @@ import io.realm.RealmResults;
         public Drop drop;
         String counter;
 
-
         //"one row" of RecyclerView
         //adding MarkListener to constructor
         public DropHolder(View itemView, MarkListener listener) {
@@ -208,7 +207,6 @@ import io.realm.RealmResults;
             mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
             mTimer = (TextView) itemView.findViewById(R.id.tv_timer);
             mMarkListener = listener;
-
         }
 
 
