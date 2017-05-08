@@ -2,7 +2,9 @@ package com.studio.skyline.wezlek.adapters;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -16,6 +18,8 @@ import com.studio.skyline.wezlek.AppBucketDrops;
 import com.studio.skyline.wezlek.R;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.extras.Util;
+
+import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -190,6 +194,8 @@ import io.realm.RealmResults;
         public long actualTime;
         public long timeLeft;
         public Drop drop;
+        String counter;
+
 
         //"one row" of RecyclerView
         //adding MarkListener to constructor
@@ -214,44 +220,31 @@ import io.realm.RealmResults;
             return drop;
         }
 
-        public void setTimer(long timer) {
 
+        public void setTimer(long timer) {
             handler = new Handler();
             timerRealm = timer;
             final Runnable runnable = new Runnable() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void run() {
-                    timeLeft=timerRealm - System.currentTimeMillis();
+                    timeLeft = timerRealm - System.currentTimeMillis();
+                    counter = String.format("%02d:%02d:%02d",
+                            TimeUnit.MILLISECONDS.toHours(timeLeft),
+                            TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
+                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
+                            TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
+                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
 
                     if(timeLeft > 0){
                         handler.postDelayed(this,1000);
-                        mTimer.setText(Long.toString(timeLeft));
-
+                        mTimer.setText(counter);
                    }
                     if(timeLeft == 0 || timeLeft < 0 ){
                      mTimer.setText("Czas na lek !");
                     }
                 }
             }; handler.postDelayed(runnable,1000);
-            /*timeRemaining = timer * 1000;
-            final Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
-                    timeRemaining = timeRemaining - 1000;
-
-                    if (timeRemaining > 0) {
-                        handler.postDelayed(this, 1000);
-                        timeRemaining = timeRemaining / 1000;
-                        mTimer.setText(Long.toString(timeRemaining));
-                        timeRemaining = timeRemaining * 1000;
-                    }
-                    if (timeRemaining == 0) {
-                        mTimer.setText("Czas na lek !");
-                    }
-                }
-            };
-            //kickstart
-            handler.postDelayed(runnable, 1000);*/
         }
 
         @Override
