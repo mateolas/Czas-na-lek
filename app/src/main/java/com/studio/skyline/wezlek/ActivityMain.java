@@ -183,6 +183,9 @@ public class ActivityMain extends AppCompatActivity {
         boolean handled = true;
         int filterOption = Filter.NONE;
         switch (id) {
+            case R.id.action_none:
+                filterOption = Filter.NONE;
+                break;
             case R.id.action_add:
                 showDialogAdd();
                 break;

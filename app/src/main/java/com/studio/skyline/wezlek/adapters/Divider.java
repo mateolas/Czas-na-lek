@@ -44,7 +44,7 @@ public class Divider extends RecyclerView.ItemDecoration {
         int count = parent.getChildCount();
         for (int i = 0; i < count; i++) {
             if (AdapterDrops.FOOTER != parent.getAdapter().getItemViewType(i)) {
-                View current = parent.getChildAt(i);
+                    View current = parent.getChildAt(i);
                 top = current.getTop();
                 bottom = top + mDivider.getIntrinsicHeight();
                 mDivider.setBounds(left, top, right, bottom);
