@@ -1,35 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="85dp"
     android:background="@drawable/bg_row_pill"
     android:orientation="horizontal"
-    android:padding="22dp">
+    android:paddingLeft="22dp"
+    android:paddingTop="8dp"
+    android:paddingRight="20dp"
+    android:paddingBottom="3dp"
+    >
 
     <ImageView
-        android:layout_width="12dp"
-        android:layout_height="12dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:background="@null"
-        android:src="@drawable/ic_pill" />
+        android:layout_marginRight="6dp"
+        android:src="@drawable/ic_pill"
+        android:id="@+id/imageView3"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:id="@+id/tv_what"
-        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:paddingLeft="22dp"
-        android:paddingRight="22dp"
-        android:text="Test" />
-
-
+        android:layout_width="wrap_content"
+        android:paddingRight="12dp"
+        android:paddingTop="9dp"
+        android:text="Nazwa leku"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/tv_date_added_text"
+        android:layout_alignStart="@+id/tv_date_added_text" />
 
     <TextView
         android:id="@+id/tv_timer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="22dp"
-        android:paddingRight="22dp"
-        android:text="Timer" />
+        android:textSize="20sp"
+        android:paddingTop="9dp"
+        android:text="Timer"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_above="@+id/tv_date_added_text"
+        android:layout_toRightOf="@+id/tv_when"
+        android:layout_toEndOf="@+id/tv_when" />
+
+    <TextView
+        android:id="@+id/tv_date_added_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text="DD:MM:YY"
+        android:textSize="12dp"
+        android:layout_alignBaseline="@+id/tv_date_added_text"
+        android:layout_alignBottom="@+id/tv_date_added_text"
+        android:layout_toRightOf="@+id/tv_date_added_text"
+        android:layout_toEndOf="@+id/tv_date_added_text" />
+
+    <TextView
+        android:id="@+id/tv_date_ended"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text="DD:MM:YY"
+        android:textSize="12sp"
+        android:layout_alignBaseline="@+id/tv_date_ended_text"
+        android:layout_alignBottom="@+id/tv_date_ended_text"
+        android:layout_toRightOf="@+id/tv_date_ended_text"
+        android:layout_toEndOf="@+id/tv_date_ended_text" />
+
+    <TextView
+        android:id="@+id/tv_medicine_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="4dp"
+        android:text="100"
+        android:textSize="12sp"
+        android:layout_alignBaseline="@+id/tv_medicine_quantity_text"
+        android:layout_alignBottom="@+id/tv_medicine_quantity_text"
+        android:layout_toRightOf="@+id/tv_medicine_quantity_text"
+        android:layout_toEndOf="@+id/tv_medicine_quantity_text" />
+
+    <TextView
+        android:id="@+id/tv_date_ended_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data zakończenia:"
+        android:textSize="12sp"
+        android:layout_below="@+id/tv_date_added_12"
+        android:layout_alignLeft="@+id/tv_date_added_text"
+        android:layout_alignStart="@+id/tv_date_added_text" />
+
+    <TextView
+        android:id="@+id/tv_date_added_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:text="Data dodania:"
+        android:textSize="12dp"
+        android:layout_marginTop="6dp"
+        android:layout_below="@+id/tv_what"
+        android:layout_toRightOf="@+id/imageView3"
+        android:layout_toEndOf="@+id/imageView3" />
+
+    <TextView
+        android:id="@+id/tv_medicine_quantity_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nr dawki:"
+        android:textSize="12sp"
+        android:layout_alignBaseline="@+id/tv_date_added_12"
+        android:layout_alignBottom="@+id/tv_date_added_12"
+        android:layout_alignLeft="@+id/tv_timer"
+        android:layout_alignStart="@+id/tv_timer" />
 
     <TextView
         android:id="@+id/tv_when"
@@ -37,7 +122,12 @@
         android:layout_height="wrap_content"
         android:paddingLeft="22dp"
         android:paddingRight="22dp"
-        android:text="When" />
+        android:text="When"
+        android:textSize="12sp"
+        android:visibility="invisible"
+        android:layout_alignTop="@+id/tv_timer"
+        android:layout_toRightOf="@+id/tv_date_ended_text"
+        android:layout_toEndOf="@+id/tv_date_ended_text" />
 
 
-</LinearLayout>
+</RelativeLayout>
