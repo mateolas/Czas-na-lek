@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/et_nazwa_leku"
             android:layout_marginBottom="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:text="@string/tv_co_il_godzin_nalezy_przyjmowa_lek"
             android:textSize="@dimen/tv_title_font_size" />
 
@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_hours_left"
+            android:visibility="invisible"
             android:layout_marginBottom="20dp"
             android:layout_marginTop="40dp"
             android:text="@string/data_rozpocz_cia_kuracji"
@@ -79,6 +80,7 @@
             android:id="@+id/bpv_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:layout_marginBottom="160dp"
             android:layout_marginTop="80dp"
             android:layout_below="@+id/sb_hours_interval">
@@ -89,16 +91,17 @@
             android:id="@+id/btn_dodaj_lek"
             android:layout_width="@dimen/btn_emptyNoMedicine_width"
             android:layout_height="@dimen/btn_emptyNoMedicine_height"
-            android:layout_alignParentBottom="true"
             android:background="@drawable/bg_btn_add_it"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
             android:textSize="@dimen/btn_textSize"
+            android:layout_marginTop="150dp"
+            android:layout_below="@+id/sb_hours_interval"
             android:fontFamily="sans-serif-light"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="21dp"
+
             android:text="@string/btn_dodaj"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+
+            android:layout_centerHorizontal="true" />
 
 
     </RelativeLayout>

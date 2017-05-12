@@ -28,6 +28,7 @@
         android:layout_below="@id/iv_approve"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="120dp"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/btn_textSize"
