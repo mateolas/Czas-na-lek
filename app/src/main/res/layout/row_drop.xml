@@ -42,8 +42,8 @@
         android:paddingTop="9dp"
         android:text="Timer"
         android:textColor="@android:color/white"
-        android:layout_marginLeft="41dp"
-        android:layout_marginStart="41dp"
+        android:layout_marginLeft="29dp"
+        android:layout_marginStart="29dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tv_when"
         android:layout_toEndOf="@+id/tv_when" />
@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="4dp"
         android:text="DD:MM:YY"
-               android:textSize="12sp"
+        android:textSize="12sp"
         android:layout_alignBaseline="@+id/tv_date_ended_text"
         android:layout_alignBottom="@+id/tv_date_ended_text"
         android:layout_toRightOf="@+id/tv_date_ended_text"
@@ -111,10 +111,10 @@
         android:id="@+id/tv_medicine_quantity_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nr dawki:"
+        android:text="Przyjętych dawek:"
         android:textSize="12sp"
         android:layout_alignBaseline="@+id/tv_date_added_12"
-        android:layout_alignBottom="@+id/tv_date_added_12"
+        android:layout_alignBottom="@+id/tv_date_added_text"
         android:layout_alignLeft="@+id/tv_timer"
         android:layout_alignStart="@+id/tv_timer" />
 

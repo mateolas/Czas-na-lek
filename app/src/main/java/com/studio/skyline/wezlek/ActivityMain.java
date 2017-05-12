@@ -217,10 +217,10 @@ public class ActivityMain extends AppCompatActivity {
                 mResults = mRealm.where(Drop.class).findAllAsync();
                 break;
             case Filter.LEAST_TIME_LEFT:
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("when");
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("timer");
                 break;
             case Filter.MOST_TIME_LEFT:
-                mResults = mRealm.where(Drop.class).findAllSortedAsync("when", Sort.DESCENDING);
+                mResults = mRealm.where(Drop.class).findAllSortedAsync("timer", Sort.DESCENDING);
                 break;
             case Filter.COMPLETE:
                 mResults = mRealm.where(Drop.class).equalTo("completed", true).findAllAsync();

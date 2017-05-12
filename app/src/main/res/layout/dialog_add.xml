@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/btn_close"
+            android:maxLength="14"
             android:hint="@string/ev_podaj_nazw_leku"
             android:inputType="textVisiblePassword"
             android:padding="16dp" />

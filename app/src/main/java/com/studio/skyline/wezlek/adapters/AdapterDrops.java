@@ -256,7 +256,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mDateEnded.setVisibility(View.VISIBLE);
                 mDateEndedText.setVisibility(View.VISIBLE);
                 mTimer.setVisibility(View.INVISIBLE);
-                mQuantityText.setText("Przyjętych dawek:");
             } else {
                 mDateEnded.setVisibility(View.INVISIBLE);
                 mDateEndedText.setVisibility(View.INVISIBLE);
