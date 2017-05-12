@@ -92,7 +92,7 @@ public class ActivityMain extends AppCompatActivity {
     private ResetTimerListener onResetTimerListener = new ResetTimerListener() {
         @Override
         public void onResetTimer(int position) {
-            mAdapter.resetTimer(position,mResults.get(position).getTimeSet()+System.currentTimeMillis());
+            mAdapter.resetTimer(position, (mResults.get(position).getTimeSet()+System.currentTimeMillis()), mResults.get(position).getQuantity());
             //Toast.makeText(ActivityMain.this, "getTimer value: " + mResults.get(position).getTimer(), Toast.LENGTH_SHORT).show();
 
         }

@@ -69,12 +69,14 @@ public class DialogAdd extends DialogFragment {
     private void addAction() {
         String what = mInputWhat.getText().toString();
         long timeSet = Long.parseLong(mHoursLeft.getText().toString())*1000;
-        long now = System.currentTimeMillis();
+        final long now = System.currentTimeMillis();
+        long timeEnded = System.currentTimeMillis();
         long timer = timeSet + now;
+        int quantity = 1;
         Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
-        Drop drop = new Drop(what, now, mInputWhen.getTime() ,timer, false,timeSet);
+        Drop drop = new Drop(what, now, mInputWhen.getTime() ,timer, false,timeSet,quantity,timeEnded);
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);

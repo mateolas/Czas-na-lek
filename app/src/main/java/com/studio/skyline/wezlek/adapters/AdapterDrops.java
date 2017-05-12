@@ -1,6 +1,7 @@
 package com.studio.skyline.wezlek.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -19,6 +20,8 @@ import com.studio.skyline.wezlek.R;
 import com.studio.skyline.wezlek.beans.Drop;
 import com.studio.skyline.wezlek.extras.Util;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import io.realm.Realm;
@@ -121,7 +124,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof DropHolder) {
+          if (holder instanceof DropHolder) {
             DropHolder dropHolder = (DropHolder) holder;
             //returning an item from the paricular position
             Drop drop = mResults.get(position);
@@ -129,6 +132,9 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             dropHolder.setWhat(drop.getWhat());
             dropHolder.setWhen(drop.getWhen());
             dropHolder.setTimer(drop.getTimer());
+            dropHolder.setQuantity(drop.getQuantity());
+            dropHolder.setTimeAdded(drop.getAdded());
+            dropHolder.setTimeEnded(drop.getAdded(),drop.isCompleted());
             dropHolder.setBackground(drop.isCompleted());
         }
 
@@ -170,10 +176,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
 
-    public void resetTimer(int position, long timer) {
+    public void resetTimer(int position, long timer, int quantity) {
+        if(!mResults.get(position).isCompleted()){
+            quantity = quantity + 1;
+        }
         if (position < mResults.size()) {
             mRealm.beginTransaction();
             mResults.get(position).setTimer(timer);
+            mResults.get(position).setQuantity(quantity);
             mRealm.commitTransaction();
             notifyDataSetChanged();
         }
@@ -184,6 +194,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position < mResults.size()) {
             mRealm.beginTransaction();
             mResults.get(position).setCompleted(true);
+            mResults.get(position).setTimeEnded(System.currentTimeMillis());
             mRealm.commitTransaction();
             notifyItemChanged(position);
         }
@@ -198,6 +209,13 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         Context mContext;
         View mItemView;
         TextView mTimer;
+        TextView mQuantity;
+        TextView mDateAdded;
+        TextView mDateEnded;
+        TextView mDateEndedText;
+        TextView mQuantityText;
+
+
         //timer
         Handler handler;
         public long timerRealm;
@@ -216,9 +234,40 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
             mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
             mTimer = (TextView) itemView.findViewById(R.id.tv_timer);
+            mQuantity = (TextView) itemView.findViewById(R.id.tv_medicine_quantity);
+            mDateAdded = (TextView) itemView.findViewById(R.id.tv_date_added_12);
+            mDateEnded = (TextView) itemView.findViewById(R.id.tv_date_ended);
+            mDateEndedText = (TextView) itemView.findViewById(R.id.tv_date_ended_text);
+            mQuantityText = (TextView) itemView.findViewById(R.id.tv_medicine_quantity_text);
             mMarkListener = listener;
         }
 
+        public void setTimeAdded(long timeAdded){
+            SimpleDateFormat mFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            mDateAdded.setText(mFormatter.format(new Date(timeAdded)));
+
+
+        }
+
+        public void setTimeEnded(long timeEnded,boolean isCompleted){
+            SimpleDateFormat mFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            mDateEnded.setText(mFormatter.format(new Date(timeEnded)));
+            if(isCompleted){
+                mDateEnded.setVisibility(View.VISIBLE);
+                mDateEndedText.setVisibility(View.VISIBLE);
+                mTimer.setVisibility(View.INVISIBLE);
+                mQuantityText.setText("Przyjętych dawek:");
+            } else {
+                mDateEnded.setVisibility(View.INVISIBLE);
+                mDateEndedText.setVisibility(View.INVISIBLE);
+                mTimer.setVisibility(View.VISIBLE);
+            }
+
+        }
+
+        public void setQuantity(int quantity){
+            mQuantity.setText(Integer.toString(quantity));
+        }
 
         public void setWhat(String what) {
             mTextWhat.setText(what);
@@ -245,11 +294,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                     TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
 
                     if (timeLeft > 0) {
+                        mTimer.setTextColor(Color.WHITE);
                         handler.postDelayed(this, 1000);
                         mTimer.setText(counter);
                     }
                     if (timeLeft == 0 || timeLeft < 0) {
+                        mTimer.setTextColor(Color.RED);
                         mTimer.setText("Czas na lek !");
+
                     }
                 }
             };

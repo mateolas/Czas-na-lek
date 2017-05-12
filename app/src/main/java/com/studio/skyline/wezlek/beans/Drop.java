@@ -16,6 +16,8 @@ public class Drop extends RealmObject {
     private long timer;
     private boolean completed;
     private long timeSet;
+    private int quantity;
+    private long timeEnded;
 
     public Drop(){
 
@@ -29,7 +31,7 @@ public class Drop extends RealmObject {
         this.timeSet = timeSet;
     }
 
-    public Drop(String what, long added, long when, long timer, boolean completed, long timeSet) {
+    public Drop(String what, long added, long when, long timer, boolean completed, long timeSet,int quantity, long timeEnded) {
 
         this.what = what;
         this.added = added;
@@ -37,10 +39,28 @@ public class Drop extends RealmObject {
         this.completed = completed;
         this.timer = timer;
         this.timeSet = timeSet;
+        this.quantity = quantity;
+        this.timeEnded = timeEnded;
     }
 
     public String getWhat() {
         return what;
+    }
+
+    public long getTimeEnded() {
+        return timeEnded;
+    }
+
+    public void setTimeEnded(long timeEnded) {
+        this.timeEnded = timeEnded;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void setWhat(String what) {

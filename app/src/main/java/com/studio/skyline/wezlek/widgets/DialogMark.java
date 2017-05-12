@@ -33,7 +33,6 @@ public class DialogMark extends DialogFragment {
                     break;
                 case R.id.btn_restart:
                     restart();
-                    
                     break;
             }
             dismiss();
@@ -44,7 +43,7 @@ public class DialogMark extends DialogFragment {
 
     private void restart() {
         Bundle arguments = getArguments();
-        //we need to comunicate with adapter to mark item as completed
+        //we need to communicate with adapter to mark item as completed
         if (mTimeListener != null && arguments != null) {
             //position - position of the clicked item
             int position = arguments.getInt("POSITION");
