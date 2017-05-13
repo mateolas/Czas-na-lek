@@ -4,9 +4,9 @@
     android:layout_height="85dp"
     android:background="@drawable/bg_row_pill"
     android:orientation="horizontal"
-    android:paddingLeft="22dp"
+    android:paddingLeft="14dp"
     android:paddingTop="8dp"
-    android:paddingRight="20dp"
+    android:paddingRight="12dp"
     android:paddingBottom="3dp"
     >
 
@@ -40,10 +40,8 @@
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:paddingTop="9dp"
-        android:text="Timer"
+
         android:textColor="@android:color/white"
-        android:layout_marginLeft="17dp"
-        android:layout_marginStart="17dp"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tv_when"
         android:layout_toEndOf="@+id/tv_when" />

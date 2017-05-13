@@ -285,7 +285,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void run() {
                     timeLeft = timerRealm - System.currentTimeMillis();
-                    counter = String.format("%02d:%02d:%02d",
+                    counter = String.format("%02d h% 02d min% 02d sek",
                             TimeUnit.MILLISECONDS.toHours(timeLeft),
                             TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
                                     TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),

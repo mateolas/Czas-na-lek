@@ -49,7 +49,8 @@ public class Util {
         Intent intent = new Intent(context, NotificationService.class);
         //puting an intent into Pending intent enables to receive intent after destroying an app
         PendingIntent pendingIntent = PendingIntent.getService(context,100,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-        manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,200,2000,pendingIntent);
+        //manager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME,200,2000,pendingIntent);
+        manager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,1000,100,pendingIntent);
     }
 
 }

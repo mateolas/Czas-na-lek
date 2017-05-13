@@ -3,6 +3,7 @@ package com.studio.skyline.wezlek.services;
 import android.app.IntentService;
 import android.app.Notification;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.studio.skyline.wezlek.ActivityMain;
 import com.studio.skyline.wezlek.R;
@@ -32,10 +33,12 @@ public class NotificationService extends IntentService {
             realm = Realm.getDefaultInstance();
             //query incomplete drops
             RealmResults<Drop> results = realm.where(Drop.class).equalTo("completed", false).findAll();
+
             for (Drop current : results) {
                 if (isNotificationNeeded(current.getTimer(), System.currentTimeMillis())) {
                     fireNotification(current);
-               }
+                    Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_SHORT).show();
+                    }
 
             }
         } finally {
@@ -46,7 +49,7 @@ public class NotificationService extends IntentService {
     }
 
     private void fireNotification(Drop drop) {
-        String message = getString(R.string.notif_message)+ " \"" + drop.getWhat() + "\"";
+        String message = getString(R.string.notif_message) + " \"" + drop.getWhat() + "\"";
         PugNotification.with(this)
                 .load()
                 .title(R.string.notif_title)
@@ -67,8 +70,7 @@ public class NotificationService extends IntentService {
         long difference = timer - now;
         if (difference == 0 || difference < 0) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
 

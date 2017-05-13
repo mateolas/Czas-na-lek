@@ -68,7 +68,7 @@ public class DialogAdd extends DialogFragment {
     //adding data to database
     private void addAction() {
         String what = mInputWhat.getText().toString();
-        long timeSet = Long.parseLong(mHoursLeft.getText().toString())*1000;
+        long timeSet = Long.parseLong(mHoursLeft.getText().toString())*1000*60*60;
         final long now = System.currentTimeMillis();
         long timeEnded = System.currentTimeMillis();
         long timer = timeSet + now;
