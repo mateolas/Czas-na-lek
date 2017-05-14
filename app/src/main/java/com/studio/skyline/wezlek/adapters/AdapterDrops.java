@@ -285,16 +285,14 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void run() {
                     timeLeft = timerRealm - System.currentTimeMillis();
-                    counter = String.format("%02d h% 02d min% 02d sek",
+                    counter = String.format("%02d godz.% 02d min.",
                             TimeUnit.MILLISECONDS.toHours(timeLeft),
                             TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
-                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
-                            TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
-                                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
+                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)));
 
                     if (timeLeft > 0) {
                         mTimer.setTextColor(Color.WHITE);
-                        handler.postDelayed(this, 1000);
+                        handler.postDelayed(this, 30000);
                         mTimer.setText(counter);
                     }
                     if (timeLeft == 0 || timeLeft < 0) {
@@ -304,7 +302,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                 }
             };
-            handler.postDelayed(runnable, 1000);
+            handler.postDelayed(runnable, 100);
         }
 
         @Override

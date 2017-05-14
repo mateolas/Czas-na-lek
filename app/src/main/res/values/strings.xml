@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wez Lek</string>
+    <string name="app_name">Czas na lek</string>
     <string name="button_dodaj_lek">Dodaj lek</string>
     <string name="dodaj_lek">Dodaj lek</string>
     <string name="ev_podaj_nazw_leku">Podaj nazwę leku</string>

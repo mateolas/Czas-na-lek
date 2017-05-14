@@ -50,6 +50,7 @@ public class DialogAdd extends DialogFragment {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
             progress = progressValue;
+            mHoursLeft.setText(Integer.toString(progress));
             //Toast.makeText(getActivity(),"TEST",Toast.LENGTH_SHORT).show();
         }
 
