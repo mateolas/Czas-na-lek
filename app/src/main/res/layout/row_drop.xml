@@ -44,7 +44,9 @@
         android:textColor="@android:color/white"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@+id/tv_when"
-        android:layout_toEndOf="@+id/tv_when" />
+        android:layout_toEndOf="@+id/tv_when"
+        android:layout_marginLeft="6dp"
+        android:layout_marginStart="6dp" />
 
     <TextView
         android:id="@+id/tv_date_added_12"
@@ -125,9 +127,11 @@
         android:text="When"
         android:textSize="12sp"
         android:visibility="invisible"
-        android:layout_alignTop="@+id/tv_timer"
-        android:layout_toRightOf="@+id/tv_date_ended_text"
-        android:layout_toEndOf="@+id/tv_date_ended_text" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/tv_date_added_text"
+        android:layout_toEndOf="@+id/tv_date_added_text"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp" />
 
 
 </RelativeLayout>

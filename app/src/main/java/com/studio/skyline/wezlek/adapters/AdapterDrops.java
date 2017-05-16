@@ -194,7 +194,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position < mResults.size()) {
             mRealm.beginTransaction();
             mResults.get(position).setCompleted(true);
-            mResults.get(position).setTimeEnded(System.currentTimeMillis());
+            //mResults.get(position).setTimeEnded(System.currentTimeMillis());
             mRealm.commitTransaction();
             notifyItemChanged(position);
         }
@@ -285,7 +285,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 @Override
                 public void run() {
                     timeLeft = timerRealm - System.currentTimeMillis();
-                    counter = String.format("%02d godz.% 02d min.",
+                    counter = String.format("%02d h% 02d min",
                             TimeUnit.MILLISECONDS.toHours(timeLeft),
                             TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
                                     TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)));
