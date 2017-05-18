@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 
 import com.studio.skyline.wezlek.R;
 import com.studio.skyline.wezlek.adapters.CompleteListener;
+import com.studio.skyline.wezlek.adapters.PauseListener;
 import com.studio.skyline.wezlek.adapters.ResetTimerListener;
 
 /**
@@ -22,6 +23,7 @@ public class DialogMark extends DialogFragment {
     private ImageButton mBtnClose;
     private Button mBtnCompleted;
     private Button mBtnRestart;
+    private Button mBtnPaused;
 
     //to make buttons work we need to create onClickListeners
     private View.OnClickListener mBtnClickListener = new View.OnClickListener() {
@@ -32,16 +34,32 @@ public class DialogMark extends DialogFragment {
                         markAsComplete();
                     break;
                 case R.id.btn_restart:
-                    restart();
+                    restartTime();
+                    break;
+                case R.id.btn_pause:
+                    markAsPaused();
                     break;
             }
             dismiss();
         }
     };
 
+
+    private PauseListener mPauseListener;
+
+    private void markAsPaused() {
+        Bundle arguments = getArguments();
+        //we need to communicate with adapter to mark item as completed
+        if (mPauseListener != null && arguments != null) {
+            //position - position of the clicked item
+            int position = arguments.getInt("POSITION");
+            mPauseListener.onPause(position);
+        }
+    }
+
     private ResetTimerListener mTimeListener;
 
-    private void restart() {
+    private void restartTime() {
         Bundle arguments = getArguments();
         //we need to communicate with adapter to mark item as completed
         if (mTimeListener != null && arguments != null) {
@@ -80,10 +98,12 @@ public class DialogMark extends DialogFragment {
         mBtnClose = (ImageButton) view.findViewById(R.id.btn_close);
         mBtnCompleted = (Button) view.findViewById(R.id.btn_completed);
         mBtnRestart = (Button) view.findViewById(R.id.btn_restart);
+        mBtnPaused = (Button) view.findViewById(R.id.btn_pause);
         //setting listener to button
         mBtnClose.setOnClickListener(mBtnClickListener);
         mBtnCompleted.setOnClickListener(mBtnClickListener);
         mBtnRestart.setOnClickListener(mBtnClickListener);
+        mBtnPaused.setOnClickListener(mBtnClickListener);
 
     }
 
@@ -93,6 +113,10 @@ public class DialogMark extends DialogFragment {
 
     public void setResetTimeListener(ResetTimerListener mResetTimeListener) {
         mTimeListener = mResetTimeListener;
+    }
+
+    public void setPauseListener(PauseListener mPausedListener) {
+        mPauseListener = mPausedListener;
     }
 }
 

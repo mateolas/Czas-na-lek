@@ -17,8 +17,8 @@ import io.realm.Realm;
 //Application class is first called when adroid decides to run an app
 //Application will never be destroyed (during working of an app)
 public class AppBucketDrops extends Application {
-    @Override
-    public void onCreate() {
+        @Override
+        public void onCreate() {
         super.onCreate();
         Realm.init(this);
     }

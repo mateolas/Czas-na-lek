@@ -77,7 +77,7 @@ public class DialogAdd extends DialogFragment {
         Realm.init(getActivity());
         //default configuration
         Realm realm = Realm.getDefaultInstance();
-        Drop drop = new Drop(what, now, mInputWhen.getTime() ,timer, false,timeSet,quantity,timeEnded);
+        Drop drop = new Drop(what, now, mInputWhen.getTime() ,timer, false,timeSet,quantity,timeEnded,false);
         //copying to table, so we need to make a transaction
         realm.beginTransaction();
         realm.copyToRealm(drop);

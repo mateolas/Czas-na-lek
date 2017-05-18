@@ -13,4 +13,5 @@
     <string name="notif_title">Czas na lek</string>
     <string name="notif_long_message">Nie zapomnij o zażyciu kolejnej dawki leku. Już czas.</string>
     <string name="data_rozpocz_cia_kuracji">Data rozpoczęcia kuracji</string>
+    <string name="wstrzymaj_kuracje">Wstrzymaj kurację</string>
 </resources>

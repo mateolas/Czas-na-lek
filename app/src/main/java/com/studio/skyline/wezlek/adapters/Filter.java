@@ -12,5 +12,6 @@ public interface Filter  {
     int LEAST_TIME_LEFT = 2;
     int COMPLETE = 3;
     int INCOMPLETE = 4;
+    int PAUSE = 5;
 
 }

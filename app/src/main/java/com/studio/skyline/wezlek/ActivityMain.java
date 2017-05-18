@@ -19,6 +19,7 @@ import com.studio.skyline.wezlek.adapters.CompleteListener;
 import com.studio.skyline.wezlek.adapters.Divider;
 import com.studio.skyline.wezlek.adapters.Filter;
 import com.studio.skyline.wezlek.adapters.MarkListener;
+import com.studio.skyline.wezlek.adapters.PauseListener;
 import com.studio.skyline.wezlek.adapters.ResetListener;
 import com.studio.skyline.wezlek.adapters.ResetTimerListener;
 import com.studio.skyline.wezlek.adapters.SimpleTouchCallback;
@@ -35,7 +36,7 @@ import io.realm.Sort;
 public class ActivityMain extends AppCompatActivity {
 
     //Variables/references
-    public static final String TAG = "VIVZ";
+    public static final String TAG = "SKYLINE";
     Toolbar mToolbar;
     Button mBtnAdd;
     BucketRecyclerView mRecycler;
@@ -80,6 +81,14 @@ public class ActivityMain extends AppCompatActivity {
         }
     };
 
+    private PauseListener mPauseListener = new PauseListener() {
+        @Override
+        public void onPause(int position) {
+            //Toast.makeText(ActivityMain.this, "setted as paused" + position, Toast.LENGTH_SHORT).show();
+            mAdapter.markAsPaused(position);
+        }
+    };
+
     //anonymous interface
     private CompleteListener mCompleteListener = new CompleteListener() {
         @Override
@@ -92,20 +101,20 @@ public class ActivityMain extends AppCompatActivity {
     private ResetTimerListener onResetTimerListener = new ResetTimerListener() {
         @Override
         public void onResetTimer(int position) {
-            mAdapter.resetTimer(position, (mResults.get(position).getTimeSet()+System.currentTimeMillis()), mResults.get(position).getQuantity());
+            mAdapter.resetTimer(position, (mResults.get(position).getTimeSet() + System.currentTimeMillis()), mResults.get(position).getQuantity());
             //Toast.makeText(ActivityMain.this, "getTimer value: " + mResults.get(position).getTimer(), Toast.LENGTH_SHORT).show();
 
         }
     };
 
-
     private ResetListener mResetListener = new ResetListener() {
         @Override
         public void onReset() {
-            AppBucketDrops.save(ActivityMain.this,Filter.NONE);
+            AppBucketDrops.save(ActivityMain.this, Filter.NONE);
             loadResults(Filter.NONE);
         }
     };
+
     private void showDialogAdd() {
         //DialogAdd - class where name and frequency of taking pills are located
         DialogAdd dialog = new DialogAdd();
@@ -120,6 +129,7 @@ public class ActivityMain extends AppCompatActivity {
         dialog.setArguments(bundle);
         dialog.setCompleteListener(mCompleteListener);
         dialog.setResetTimeListener(onResetTimerListener);
+        dialog.setPauseListener(mPauseListener);
         dialog.show(getSupportFragmentManager(), "Mark");
     }
 
@@ -138,6 +148,7 @@ public class ActivityMain extends AppCompatActivity {
         mBtnAdd.setOnClickListener(mBtnAddListener);
         //initializing Realm Database
         mRealm = Realm.getDefaultInstance();
+        //loading last filter used from SharedPreference file
         int filterOption = AppBucketDrops.load(this);
         loadResults(filterOption);
         //initializng Empty view (where no medecines were added)
@@ -169,8 +180,6 @@ public class ActivityMain extends AppCompatActivity {
         Util.scheduleAlarm(this);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -201,16 +210,19 @@ public class ActivityMain extends AppCompatActivity {
             case R.id.action_show_incomplete:
                 filterOption = Filter.INCOMPLETE;
                 break;
+            case R.id.action_show_pause:
+                filterOption = Filter.PAUSE;
+                break;
             default:
                 handled = false;
                 break;
         }
-        AppBucketDrops.save(this,filterOption);
+        AppBucketDrops.save(this, filterOption);
         loadResults(filterOption);
         return handled;
     }
 
-    //loading proper option into database
+    //loading proper option into database depending on the filter value
     private void loadResults(int filterOption) {
         switch (filterOption) {
             case Filter.NONE:
@@ -218,14 +230,15 @@ public class ActivityMain extends AppCompatActivity {
                 break;
             case Filter.LEAST_TIME_LEFT:
                 mResults = mRealm.where(Drop.class)
-                        .equalTo("completed",false)
+                        .equalTo("completed", false)
+                        .equalTo("paused",false)
                         .findAllSortedAsync("timer");
                 break;
             case Filter.MOST_TIME_LEFT:
                 mResults = mRealm.where(Drop.class)
-                        .equalTo("completed",false)
+                        .equalTo("completed", false)
+                        .equalTo("paused",false)
                         .findAllSortedAsync("timer", Sort.DESCENDING);
-
                 break;
             case Filter.COMPLETE:
                 mResults = mRealm.where(Drop.class).equalTo("completed", true).findAllAsync();
@@ -233,10 +246,12 @@ public class ActivityMain extends AppCompatActivity {
             case Filter.INCOMPLETE:
                 mResults = mRealm.where(Drop.class).equalTo("completed", false).findAllAsync();
                 break;
+            case Filter.PAUSE:
+                mResults = mRealm.where(Drop.class).equalTo("paused", true).findAllAsync();
+                break;
         }
         mResults.addChangeListener(mChangeListener);
     }
-
 
 
     @Override

@@ -25,4 +25,8 @@
         android:id="@+id/action_show_incomplete"
         android:title="Niezakończone" />
 
+    <item
+        android:id="@+id/action_show_pause"
+        android:title="Wstrzymane" />
+
 </menu>
