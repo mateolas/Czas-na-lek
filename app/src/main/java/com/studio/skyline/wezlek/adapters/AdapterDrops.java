@@ -184,7 +184,6 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         if (position < mResults.size()) {
             mRealm.beginTransaction();
-
             mResults.get(position).setPaused(false);
             mResults.get(position).setTimer(timer);
             mResults.get(position).setQuantity(quantity);
