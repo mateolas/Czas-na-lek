@@ -63,6 +63,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         mMarkListener = markListener;
         mResetListener = resetListener;
 
+
     }
 
     public void update(RealmResults<Drop> results) {
@@ -183,9 +184,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         if (position < mResults.size()) {
             mRealm.beginTransaction();
+
+            mResults.get(position).setPaused(false);
             mResults.get(position).setTimer(timer);
             mResults.get(position).setQuantity(quantity);
-            mResults.get(position).setPaused(false);
             mRealm.commitTransaction();
             notifyDataSetChanged();
         }
@@ -205,7 +207,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position < mResults.size()) {
             mRealm.beginTransaction();
             mResults.get(position).setCompleted(true);
-            //mResults.get(position).setTimeEnded(System.currentTimeMillis());
+            mResults.get(position).setTimeEnded(System.currentTimeMillis());
             mRealm.commitTransaction();
             notifyItemChanged(position);
         }
@@ -233,6 +235,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public long timeLeft;
         public Drop drop;
         String counter;
+        public boolean inIsPaused;
+        public boolean inIsCompleted;
 
         //"one row" of RecyclerView
         //adding MarkListener to constructor
@@ -285,51 +289,54 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
 
-        public void setTimer(long timer, final boolean isPaused, final boolean isCompleted) {
+        public void setTimer(long timer, boolean isPaused, boolean isCompleted) {
             handler = new Handler();
             timerRealm = timer;
+            inIsPaused = isPaused;
+            inIsCompleted = isCompleted;
             final Runnable runnable = new Runnable() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void run() {
-                    timeLeft = timerRealm - System.currentTimeMillis();
-                    counter = String.format("%02d h% 02d min",
-                            TimeUnit.MILLISECONDS.toHours(timeLeft),
-                            TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
-                                    TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)));
 
-                    if (isPaused) {
-                        mTimer.setText("Wstrzymano");
-                    } else {
-
-                        if (isCompleted) {
-                            mTimer.setText("Zakończono");
-                        }
+                    if(inIsCompleted == true || inIsPaused == true){
+                        timeLeft = 100;
+                    } else{
+                        timeLeft = timerRealm - System.currentTimeMillis();
                     }
-                    if (timeLeft > 0 && isCompleted == false && isPaused == false) {
+
+                    if (inIsPaused) {
+
+                        mTimer.setText("Wstrzymano");
+                    }
+                    if (inIsCompleted) {
+
+                        mTimer.setText("Zakończono");
+                    }
+                    if (timeLeft > 0 && inIsCompleted == false && inIsPaused == false) {
+
+                        counter = String.format("%02d h% 02d min",
+                                TimeUnit.MILLISECONDS.toHours(timeLeft),
+                                TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)));
+
+
                         mTimer.setTextColor(Color.WHITE);
                         handler.postDelayed(this, 30000);
                         mTimer.setText(counter);
                     }
-                    if (timeLeft == 0 || timeLeft < 0 && isCompleted == false && isPaused == false) {
+                    timeLeft = timerRealm - System.currentTimeMillis();
+                    if (timeLeft == 0 || timeLeft < 0 && inIsCompleted == false && inIsPaused == false) {
                         mTimer.setTextColor(Color.RED);
                         mTimer.setText("Czas na lek !");
+
                     }
-
-
                 }
             };
-            if (isPaused) {
-                mTimer.setText("Wstrzymano");
-            } else {
-                if (isCompleted) {
-                    mTimer.setText("Zakończono");
-                } else {
-                    handler.postDelayed(runnable, 10);
-                }
 
-            }
+            handler.postDelayed(runnable, 10);
         }
+
 
         @Override
         public void onClick(View v) {

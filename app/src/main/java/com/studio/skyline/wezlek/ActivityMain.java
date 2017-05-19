@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
@@ -68,7 +69,6 @@ public class ActivityMain extends AppCompatActivity {
         public void onChange(Object element) {
             //mAdapter.notifyDataSetChanged();
             mAdapter.update(mResults);
-
         }
     };
 
@@ -84,7 +84,7 @@ public class ActivityMain extends AppCompatActivity {
     private PauseListener mPauseListener = new PauseListener() {
         @Override
         public void onPause(int position) {
-            //Toast.makeText(ActivityMain.this, "setted as paused" + position, Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityMain.this, "ONPAUSE PAUSE STATUS" + position + mResults.get(position).isPaused(), Toast.LENGTH_SHORT).show();
             mAdapter.markAsPaused(position);
         }
     };
@@ -102,7 +102,7 @@ public class ActivityMain extends AppCompatActivity {
         @Override
         public void onResetTimer(int position) {
             mAdapter.resetTimer(position, (mResults.get(position).getTimeSet() + System.currentTimeMillis()), mResults.get(position).getQuantity());
-            //Toast.makeText(ActivityMain.this, "getTimer value: " + mResults.get(position).getTimer(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ActivityMain.this, "RESET PAUSE STATUS " + mResults.get(position).isPaused(), Toast.LENGTH_SHORT).show();
 
         }
     };
