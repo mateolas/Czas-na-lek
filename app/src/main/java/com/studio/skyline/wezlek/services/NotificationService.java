@@ -3,7 +3,6 @@ package com.studio.skyline.wezlek.services;
 import android.app.IntentService;
 import android.app.Notification;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.studio.skyline.wezlek.ActivityMain;
 import com.studio.skyline.wezlek.R;
@@ -32,12 +31,15 @@ public class NotificationService extends IntentService {
         try {
             realm = Realm.getDefaultInstance();
             //query incomplete drops
-            RealmResults<Drop> results = realm.where(Drop.class).equalTo("completed", false).findAll();
+            RealmResults<Drop> results = realm.where(Drop.class)
+                    .equalTo("completed", false)
+                    .equalTo("paused",false)
+                    .findAll();
 
             for (Drop current : results) {
                 if (isNotificationNeeded(current.getTimer(), System.currentTimeMillis())) {
                     fireNotification(current);
-                    Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(),"TEST",Toast.LENGTH_SHORT).show();
                     }
 
             }

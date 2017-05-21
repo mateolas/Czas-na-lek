@@ -93,7 +93,8 @@ public class ActivityMain extends AppCompatActivity {
         @Override
         public void onComplete(int position) {
             //Toast.makeText(ActivityMain.this, "position in activity" + position, Toast.LENGTH_SHORT).show();
-            mAdapter.markComplete(position);
+            mAdapter.markComplete(position,System.currentTimeMillis());
+
         }
     };
 

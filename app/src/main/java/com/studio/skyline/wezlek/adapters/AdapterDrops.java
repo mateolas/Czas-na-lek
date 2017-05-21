@@ -93,7 +93,9 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         } else {
             if (mFilterOption == Filter.COMPLETE ||
                     mFilterOption == Filter.INCOMPLETE ||
-                    mFilterOption == Filter.PAUSE) {
+                    mFilterOption == Filter.PAUSE ||
+                    mFilterOption == Filter.MOST_TIME_LEFT ||
+                    mFilterOption == Filter.LEAST_TIME_LEFT) {
                 if (position == 0) {
                     return NO_ITEM;
                 } else {
@@ -136,7 +138,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             dropHolder.setTimer(drop.getTimer(), drop.isPaused(), drop.isCompleted());
             dropHolder.setQuantity(drop.getQuantity());
             dropHolder.setTimeAdded(drop.getAdded());
-            dropHolder.setTimeEnded(drop.getAdded(), drop.isCompleted());
+            dropHolder.setTimeEnded(drop.getTimeEnded(), drop.isCompleted());
             dropHolder.setBackground(drop.isCompleted());
         }
 
@@ -147,9 +149,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (!mResults.isEmpty()) {
             return mResults.size() + COUNT_FOOTER;
         } else {
-            if (mFilterOption == Filter.LEAST_TIME_LEFT
-                    || mFilterOption == Filter.MOST_TIME_LEFT
-                    || mFilterOption == Filter.NONE) {
+            if (mFilterOption == Filter.NONE) {
                 return 0;
             } else {
                 return COUNT_NO_ITEMS + COUNT_FOOTER;
@@ -201,12 +201,13 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
-    public void markComplete(int position) {
+    public void markComplete(int position, long timeEnded) {
         //checking that item is not a footer
         if (position < mResults.size()) {
             mRealm.beginTransaction();
+            mResults.get(position).setTimeEnded(timeEnded);
             mResults.get(position).setCompleted(true);
-            mResults.get(position).setTimeEnded(System.currentTimeMillis());
+
             mRealm.commitTransaction();
             notifyItemChanged(position);
         }
@@ -261,16 +262,17 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setTimeEnded(long timeEnded, boolean isCompleted) {
-            SimpleDateFormat mFormatter = new SimpleDateFormat("dd/MM/yyyy");
-            mDateEnded.setText(mFormatter.format(new Date(timeEnded)));
+            mDateEnded.setText("100");
             if (isCompleted) {
                 mDateEnded.setVisibility(View.VISIBLE);
                 mDateEndedText.setVisibility(View.VISIBLE);
+                SimpleDateFormat mFormatter = new SimpleDateFormat("dd/MM/yyyy");
+                mDateEnded.setText(mFormatter.format(new Date(timeEnded)));
 
             } else {
-                mDateEnded.setVisibility(View.INVISIBLE);
-                mDateEndedText.setVisibility(View.INVISIBLE);
-                mTimer.setVisibility(View.VISIBLE);
+                mDateEnded.setVisibility(View.VISIBLE);
+                mDateEndedText.setVisibility(View.VISIBLE);
+                //mTimer.setVisibility(View.VISIBLE);
             }
 
         }
@@ -305,23 +307,25 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
 
                     if (inIsPaused) {
-
+                        mTimer.setTextColor(Color.WHITE);
                         mTimer.setText("Wstrzymano");
                     }
                     if (inIsCompleted) {
-
+                        mTimer.setTextColor(Color.WHITE);
                         mTimer.setText("Zakończono");
                     }
                     if (timeLeft > 0 && inIsCompleted == false && inIsPaused == false) {
 
-                        counter = String.format("%02d h% 02d min",
+                        counter = String.format("%02d:%02d:%02d",
                                 TimeUnit.MILLISECONDS.toHours(timeLeft),
                                 TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
-                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)));
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
+                                TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
+                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
 
 
                         mTimer.setTextColor(Color.WHITE);
-                        handler.postDelayed(this, 30000);
+                        handler.postDelayed(this, 1000);
                         mTimer.setText(counter);
                     }
                     timeLeft = timerRealm - System.currentTimeMillis();
