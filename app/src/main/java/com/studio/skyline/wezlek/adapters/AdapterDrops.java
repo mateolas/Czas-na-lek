@@ -47,6 +47,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public RealmResults<Drop> mResults;
     private AddListener mAddListener;
     private int mFilterOption;
+    private TextView mFilter;
     private Realm mRealm;
     private Context mContext;
     Handler handler;

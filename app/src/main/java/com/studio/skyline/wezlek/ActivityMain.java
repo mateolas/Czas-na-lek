@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.studio.skyline.wezlek.adapters.AdapterDrops;
@@ -44,6 +45,7 @@ public class ActivityMain extends AppCompatActivity {
     RealmResults<Drop> mResults;
     View mEmptyView;
     AdapterDrops mAdapter;
+    TextView mFilter;
 
     //Inner anonymous class - On click listener for button
     private View.OnClickListener mBtnAddListener = new View.OnClickListener() {
@@ -110,7 +112,7 @@ public class ActivityMain extends AppCompatActivity {
     private ResetListener mResetListener = new ResetListener() {
         @Override
         public void onReset() {
-            AppBucketDrops.save(ActivityMain.this, Filter.NONE);
+            AppBucketDrops.save(ActivityMain.this, Filter.NONE, "Filtr: Wszystko");
             loadResults(Filter.NONE);
         }
     };
@@ -138,6 +140,7 @@ public class ActivityMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mFilter = (TextView) findViewById(R.id.tv_filter);
         //initializng Toolbar
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         //setting up a Toolbar
@@ -149,8 +152,10 @@ public class ActivityMain extends AppCompatActivity {
         //initializing Realm Database
         mRealm = Realm.getDefaultInstance();
         //loading last filter used from SharedPreference file
-        int filterOption = AppBucketDrops.load(this);
-        loadResults(filterOption);
+        int filterOptionInt = AppBucketDrops.load(this);
+        String filterOptionString = AppBucketDrops.loadString(this);
+        loadResults(filterOptionInt);
+        mFilter.setText(filterOptionString);
         //initializng Empty view (where no medecines were added)
         mEmptyView = findViewById(R.id.empty_drops);
         //initializing Recycler View
@@ -160,7 +165,7 @@ public class ActivityMain extends AppCompatActivity {
         //setting an animation
         mRecycler.setItemAnimator(new DefaultItemAnimator());
         //hiding Toolbar when no items are in Recycler View
-        mRecycler.hideIfEmpty(mToolbar);
+        mRecycler.hideIfEmpty(mToolbar, mFilter);
         //show Empty view when no items are in Recycler View
         mRecycler.showIfEmpty(mEmptyView);
         //adding an Adapter view
@@ -191,34 +196,43 @@ public class ActivityMain extends AppCompatActivity {
         int id = item.getItemId();
         boolean handled = true;
         int filterOption = Filter.NONE;
+        String filterOptionString = "Filtr: Wszystko";
         switch (id) {
             case R.id.action_none:
                 filterOption = Filter.NONE;
+                filterOptionString = "Filtr: Wszystko";
                 break;
             case R.id.action_add:
                 showDialogAdd();
                 break;
             case R.id.action_sort_ascending_date:
                 filterOption = Filter.LEAST_TIME_LEFT;
+                filterOptionString ="Filtr: Pozostało najmniej czasu ";
                 break;
             case R.id.action_sort_descending_date:
                 filterOption = Filter.MOST_TIME_LEFT;
+                filterOptionString = "Filtr: Pozostało najwięcej czasu";
                 break;
             case R.id.action_show_complete:
                 filterOption = Filter.COMPLETE;
+                filterOptionString = "Filtr: Zakończone";
                 break;
             case R.id.action_show_incomplete:
                 filterOption = Filter.INCOMPLETE;
+                filterOptionString = "Filtr: Niezakończone";
                 break;
             case R.id.action_show_pause:
                 filterOption = Filter.PAUSE;
+                filterOptionString = "Filtr: Wstrzymane";
                 break;
             default:
                 handled = false;
+                filterOptionString = "Filtr: Wszystko";
                 break;
         }
-        AppBucketDrops.save(this, filterOption);
+        AppBucketDrops.save(this, filterOption,filterOptionString);
         loadResults(filterOption);
+        mFilter.setText(filterOptionString);
         return handled;
     }
 

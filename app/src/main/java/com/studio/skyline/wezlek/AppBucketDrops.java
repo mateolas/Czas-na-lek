@@ -24,10 +24,11 @@ public class AppBucketDrops extends Application {
     }
 
     //method to save info in the Shared Preferences file
-    public static void save(Context context, int filterOption) {
+    public static void save(Context context, int filterOptionInt, String filterOptionString) {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = pref.edit();
-        editor.putInt("filter", filterOption);
+        editor.putInt("filter", filterOptionInt);
+        editor.putString("filterString", filterOptionString);
         editor.apply();
     }
 
@@ -36,5 +37,12 @@ public class AppBucketDrops extends Application {
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
         int filterOption = pref.getInt("filter", Filter.NONE);
         return filterOption;
+    }
+
+    //method to load info from the Shared Preferences file
+    public static String loadString(Context context) {
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(context);
+        String filterString = pref.getString("filterString", "Filtr: Wszystko");
+        return filterString;
     }
 }
