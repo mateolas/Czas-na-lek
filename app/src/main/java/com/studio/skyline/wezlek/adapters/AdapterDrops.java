@@ -185,9 +185,9 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
         if (position < mResults.size()) {
             mRealm.beginTransaction();
-            mResults.get(position).setPaused(false);
-            mResults.get(position).setTimer(timer);
             mResults.get(position).setQuantity(quantity);
+            mResults.get(position).setTimer(timer);
+            mResults.get(position).setPaused(false);
             mRealm.commitTransaction();
             notifyDataSetChanged();
         }
@@ -207,8 +207,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (position < mResults.size()) {
             mRealm.beginTransaction();
             mResults.get(position).setTimeEnded(timeEnded);
+            mResults.get(position).setPaused(false);
             mResults.get(position).setCompleted(true);
-
             mRealm.commitTransaction();
             notifyItemChanged(position);
         }
@@ -271,8 +271,8 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 mDateEnded.setText(mFormatter.format(new Date(timeEnded)));
 
             } else {
-                mDateEnded.setVisibility(View.VISIBLE);
-                mDateEndedText.setVisibility(View.VISIBLE);
+                mDateEnded.setVisibility(View.INVISIBLE);
+                mDateEndedText.setVisibility(View.INVISIBLE);
                 //mTimer.setVisibility(View.VISIBLE);
             }
 
@@ -317,12 +317,10 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     }
                     if (timeLeft > 0 && inIsCompleted == false && inIsPaused == false) {
 
-                        counter = String.format("%02d:%02d:%02d",
+                        counter = String.format("%02d h% 02d min",
                                 TimeUnit.MILLISECONDS.toHours(timeLeft),
                                 TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
-                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
-                                TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
-                                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
+                                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)));
 
 
                         mTimer.setTextColor(Color.WHITE);

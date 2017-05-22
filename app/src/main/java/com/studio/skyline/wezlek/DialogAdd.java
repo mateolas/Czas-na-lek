@@ -1,5 +1,6 @@
 package com.studio.skyline.wezlek;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -49,6 +50,7 @@ public class DialogAdd extends DialogFragment {
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progressValue, boolean fromUser) {
+            mHoursLeft.setTextColor(Color.WHITE);
             progress = progressValue;
             mHoursLeft.setText(Integer.toString(progress));
             //Toast.makeText(getActivity(),"TEST",Toast.LENGTH_SHORT).show();
@@ -61,6 +63,7 @@ public class DialogAdd extends DialogFragment {
 
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
+            mHoursLeft.setTextColor(Color.WHITE);
             mHoursLeft.setText(Integer.toString(progress));
             //Toast.makeText(getActivity(),"STOP",Toast.LENGTH_SHORT).show();
         }
@@ -69,7 +72,7 @@ public class DialogAdd extends DialogFragment {
     //adding data to database
     private void addAction() {
         String what = mInputWhat.getText().toString();
-        long timeSet = Long.parseLong(mHoursLeft.getText().toString())*1000;
+        long timeSet = Long.parseLong(mHoursLeft.getText().toString())*1000*60*60;
         final long now = System.currentTimeMillis();
         long timeEnded = System.currentTimeMillis();
         long timer = timeSet + now;
