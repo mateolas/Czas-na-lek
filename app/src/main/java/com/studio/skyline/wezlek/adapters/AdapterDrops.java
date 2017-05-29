@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +134,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             Drop drop = mResults.get(position);
             //seting MtextView to proper drop.getWhat text
             dropHolder.setWhat(drop.getWhat());
-            dropHolder.setWhen(drop.getWhen());
+            //dropHolder.setWhen(drop.getWhen());
             dropHolder.setTimer(drop.getTimer(), drop.isPaused(), drop.isCompleted());
             dropHolder.setQuantity(drop.getQuantity());
             dropHolder.setTimeAdded(drop.getAdded());
@@ -218,7 +217,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         //initialising mTextView which is type DropHolder
         TextView mTextWhat;
-        TextView mTextWhen;
+        //TextView mTextWhen;
         MarkListener mMarkListener;
         Context mContext;
         View mItemView;
@@ -247,7 +246,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             mContext = itemView.getContext();
             itemView.setOnClickListener(this);
             mTextWhat = (TextView) itemView.findViewById(R.id.tv_what);
-            mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
+            //mTextWhen = (TextView) itemView.findViewById(R.id.tv_when);
             mTimer = (TextView) itemView.findViewById(R.id.tv_timer);
             mQuantity = (TextView) itemView.findViewById(R.id.tv_medicine_quantity);
             mDateAdded = (TextView) itemView.findViewById(R.id.tv_date_added_12);
@@ -365,7 +364,7 @@ public class AdapterDrops extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
 
         public void setWhen(long when) {
-            mTextWhen.setText(DateUtils.getRelativeTimeSpanString(when, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS, 0));
+            //mTextWhen.setText(DateUtils.getRelativeTimeSpanString(when, System.currentTimeMillis(), DateUtils.DAY_IN_MILLIS, 0));
 
         }
     }
